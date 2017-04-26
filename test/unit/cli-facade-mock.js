@@ -1,37 +1,36 @@
 'use strict';
 
-var colors = require('colors/safe');
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-describe('cli : facade : mock', function(){
+describe('cli : facade : mock', () => {
 
-  var logSpy = {},
-      MockFacade = require('../../src/cli/facade/mock'),
-      Local = require('../../src/cli/domain/local'),
-      local = new Local({ logger: { log: function(){}}}),
-      mockFacade = new MockFacade({ local: local, logger: logSpy });
+  const logSpy = {},
+    MockFacade = require('../../src/cli/facade/mock'),
+    Local = require('../../src/cli/domain/local'),
+    local = new Local(),
+    mockFacade = new MockFacade({ local: local, logger: logSpy });
 
-  var execute = function(){
-    logSpy.log = sinon.spy();
-    mockFacade({ targetType: 'plugin', targetName: 'getValue', targetValue: 'value' }, function(){});
+  const execute = function(){
+    logSpy.ok = sinon.spy();
+    mockFacade({ targetType: 'plugin', targetName: 'getValue', targetValue: 'value' }, () => {});
   };
 
-  describe('when mocking plugin', function(){
+  describe('when mocking plugin', () => {
 
-    describe('when it succeeds', function(){
+    describe('when it succeeds', () => {
 
-      beforeEach(function(){
+      beforeEach(() => {
         sinon.stub(local, 'mock').yields(null, 'ok');
         execute();
       });
 
-      afterEach(function(){
+      afterEach(() => {
         local.mock.restore();
       });
 
-      it('should show a confirmation message', function(){
-        expect(logSpy.log.args[0][0]).to.equal(colors.green('Mock for plugin has been registered: getValue () => value'));
+      it('should show a confirmation message', () => {
+        expect(logSpy.ok.args[0][0]).to.equal('Mock for plugin has been registered: getValue () => value');
       });
     });
   });

@@ -1,21 +1,21 @@
 'use strict';
 
-var format = require('stringformat');
+const format = require('stringformat');
 
-var packageInfo = require('../package');
-var _ = require('./utils/helpers');
+const packageInfo = require('../package');
+const _ = require('./utils/helpers');
 
-var lowerHeaderKeys = function(headers){
-  var result = {};
+const lowerHeaderKeys = function(headers){
+  const result = {};
 
-  _.each(headers, function(header, headerName){
+  _.each(headers, (header, headerName) => {
     result[headerName.toLowerCase()] = header;
   });
 
   return result;
 };
 
-var getDefaultUserAgent = function() {
+const getDefaultUserAgent = function() {
   return format('oc-client-{0}/{1}-{2}-{3}',
                 packageInfo.version,
                 process.version,
@@ -23,17 +23,17 @@ var getDefaultUserAgent = function() {
                 process.arch);
 };
 
-var sanitiseDefaultOptions = function(options) {
+const sanitiseDefaultOptions = function(options) {
   if(_.isFunction(options)){
-      options = {};
-    }
+    options = {};
+  }
 
-    options = options || {};
-    options.headers = lowerHeaderKeys(options.headers);
-    options.headers['user-agent'] = options.headers['user-agent'] || getDefaultUserAgent();
+  options = options || {};
+  options.headers = lowerHeaderKeys(options.headers);
+  options.headers['user-agent'] = options.headers['user-agent'] || getDefaultUserAgent();
 
-    options.timeout = options.timeout || 5;
-    return options;
+  options.timeout = options.timeout || 5;
+  return options;
 };
 
 module.exports = {
@@ -59,7 +59,7 @@ module.exports = {
     return options;
   },
 
-  sanitiseGlobalGetInfoOptions: function(options, config) {
+  sanitiseGlobalGetInfoOptions: function(options) {
     options = sanitiseDefaultOptions(options);
     options.headers.accept = 'application/vnd.oc.info+json';
     return options;

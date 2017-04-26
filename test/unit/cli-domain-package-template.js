@@ -1,17 +1,15 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var path = require('path');
-var sinon = require('sinon');
-var uglifyJs = require('uglify-js');
-var _ = require('underscore');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const sinon = require('sinon');
+const _ = require('lodash');
 
-var fsMock,
-    packageTemplate,
-    uglifySpy;
+let fsMock,
+  packageTemplate,
+  uglifySpy;
 
-var initialise = function(fs, uglifyStub){
+const initialise = function(fs, uglifyStub){
 
   uglifySpy = sinon.spy();
   fsMock = _.extend({
@@ -31,16 +29,16 @@ var initialise = function(fs, uglifyStub){
   });
 };
 
-describe('cli : domain : package-template', function(){
+describe('cli : domain : package-template', () => {
 
-  describe('when packaging component\'s template', function(){
+  describe('when packaging component\'s template', () => {
 
-    describe('when component is not valid', function(){
+    describe('when component is not valid', () => {
 
-      describe('when component view is not found', function(){
+      describe('when component view is not found', () => {
 
-        var error;
-        before(function(done){
+        let error;
+        before((done) => {
 
           initialise({
             existsSync: sinon.stub().returns(false)
@@ -57,21 +55,21 @@ describe('cli : domain : package-template', function(){
               }
             },
             publishPath: '/path/to/component/_package/'
-          }, function(e, r){
+          }, (e) => {
             error = e;
             done();
           });
         });
 
-        it('should show error', function(){
+        it('should show error', () => {
           expect(error).to.equal('file template.jade not found');
         });
       });
 
-      describe('when component view type is not valid', function(){
+      describe('when component view type is not valid', () => {
 
-        var error;
-        before(function(done){
+        let error;
+        before((done) => {
 
           initialise();
 
@@ -86,21 +84,21 @@ describe('cli : domain : package-template', function(){
               }
             },
             publishPath: '/path/to/component/_package/'
-          }, function(e, r){
+          }, (e) => {
             error = e;
             done();
           });
         });
 
-        it('should show error', function(){
-          expect(error).to.equal('template.wha compilation failed - the template is not valid. Allowed values are handlebars and jade');
+        it('should show error', () => {
+          expect(error).to.equal('template.wha compilation failed - Error requiring oc-template: "whazaaa" not found');
         });
       });
     });
 
-    describe('when component is valid', function(){
+    describe('when component is valid', () => {
 
-      before(function(done){
+      before((done) => {
 
         initialise({
           readFileSync: sinon.stub().returns('div this is a jade view')
@@ -120,7 +118,7 @@ describe('cli : domain : package-template', function(){
         }, done);
       });
 
-      it('should save compiled view', function(){
+      it('should save compiled view', () => {
         expect(fsMock.writeFile.args[0][1]).to.contain('<div>this is a jade view</div>');
       });
     });

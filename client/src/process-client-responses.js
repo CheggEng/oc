@@ -1,23 +1,23 @@
 'use strict';
 
-var format = require('stringformat');
+const format = require('stringformat');
 
-var GetOCClientScript = require('./get-oc-client-script');
-var HrefBuilder = require('./href-builder');
-var htmlRenderer = require('./html-renderer');
-var settings = require('./settings');
-var templates = require('./templates');
-var _ = require('./utils/helpers');
+const GetOCClientScript = require('./get-oc-client-script');
+const HrefBuilder = require('./href-builder');
+const htmlRenderer = require('./html-renderer');
+const settings = require('./settings');
+const templates = require('./templates');
+const _ = require('./utils/helpers');
 
 module.exports = function(cache, config){
 
-  var getOCClientScript = new GetOCClientScript(cache),
-      buildHref = new HrefBuilder(config);
+  const getOCClientScript = new GetOCClientScript(cache),
+    buildHref = new HrefBuilder(config);
 
   return function(toDo, options, cb){
-    var toProcess = [];
+    const toProcess = [];
 
-    _.each(toDo, function(action){
+    _.each(toDo, (action) => {
       if(action.render === 'client' && !action.done){
         toProcess.push(action);
       }
@@ -27,31 +27,34 @@ module.exports = function(cache, config){
       return cb();
     }
 
-    getOCClientScript(function(clientErr, clientJs){
-      _.each(toDo, function(action){
+    getOCClientScript((clientErr, clientJs) => {
+      _.each(toDo, (action) => {
         if(action.render === 'client'){
           if(!!clientErr || !clientJs){
             action.result.error = settings.genericError;
             action.result.html = '';
           } else {
-            var componentClientHref = buildHref.client(action.component, options);
-
-            if(!componentClientHref){
-              action.result.error = settings.clientSideRenderingFail;
+            let componentClientHref;
+            try {
+              componentClientHref = buildHref.client(action.component, options);
+            } catch (err) {
+              action.result.error = err;
               action.result.html = '';
-            } else {
-              var unrenderedComponentTag = htmlRenderer.unrenderedComponent(componentClientHref, options);
+              return;
+            }
 
-              if(action.failover){
-                action.result.html = format(templates.clientScript, clientJs, unrenderedComponentTag);
-              } else {
-                action.result.error = null;
-                action.result.html = unrenderedComponentTag;
-              }
+            const unrenderedComponentTag = htmlRenderer.unrenderedComponent(componentClientHref, options);
+
+            if(action.failover){
+              action.result.html = format(templates.clientScript, clientJs, unrenderedComponentTag);
+            } else {
+              action.result.error = null;
+              action.result.html = unrenderedComponentTag;
             }
           }
         }
       });
+
       cb();
     });
   };

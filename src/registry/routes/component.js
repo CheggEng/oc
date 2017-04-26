@@ -1,11 +1,11 @@
 'use strict';
 
-var GetComponentHelper = require('./helpers/get-component');
-var _ = require('underscore');
+const GetComponentHelper = require('./helpers/get-component');
+const _ = require('lodash');
 
 module.exports = function(conf, repository){
 
-  var getComponent = new GetComponentHelper(conf, repository);
+  const getComponent = new GetComponentHelper(conf, repository);
 
   return function(req, res){
     getComponent({
@@ -14,21 +14,17 @@ module.exports = function(conf, repository){
       name: req.params.componentName,
       parameters: req.query,
       version: req.params.componentVersion
-    }, function(result){
-      if(!!result.response.error){
+    }, (result) => {
+      if(result.response.error){
         res.errorCode = result.response.code;
         res.errorDetails = result.response.error;
       }
 
-      if (!_.isEmpty(result.response.headers)) {
-        res.set(result.response.headers);
-        
-        if (req.method === 'GET') {
-          delete result.response.headers;
-        }
+      if (!_.isEmpty(result.headers)) {
+        res.set(result.headers);
       }
 
-      return res.json(result.status, result.response);
+      return res.status(result.status).json(result.response);
     });
   };
 };

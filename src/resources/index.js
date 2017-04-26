@@ -58,7 +58,9 @@ module.exports = {
       PLUGIN_NOT_FOUND: 'Component is trying to use un-registered plugins: {0}',
       PLUGIN_NOT_IMPLEMENTED: 'registry does not implement plugins: {0}',
       PLUGIN_NOT_VALID: 'Plugin {0} is not valid',
-      RESOLVING_ERROR: 'component resolving error'
+      RESOLVING_ERROR: 'component resolving error',
+      TEMPLATE_NOT_FOUND: 'Template {0} not found',
+      TEMPLATE_NOT_VALID: '{0} is not a valid oc-template'
     },
     cli: {
       COMPONENT_HREF_NOT_FOUND: 'The specified path is not a valid component\'s url',
@@ -82,14 +84,17 @@ module.exports = {
       REGISTRY_NOT_FOUND: 'oc registries not found. Run "oc registry add <registry href>"',
       SERVERJS_DEPENDENCY_NOT_DECLARED: 'Missing dependencies from package.json => {0}',
       TEMPLATE_NOT_FOUND: 'file {0} not found',
-      TEMPLATE_TYPE_NOT_VALID: 'the template is not valid. Allowed values are handlebars and jade'
+      TEMPLATE_TYPE_NOT_VALID: 'the template is not valid. Allowed values are handlebars and jade',
+      TEMPLATE_DEP_MISSING: 'Template dependency missing. Run "$npm install --save {0}" to fix it.'
     },
     generic: 'An error occurred: {0}',
     s3: {
       DIR_NOT_FOUND: 'Directory "{0}" not found',
       DIR_NOT_FOUND_CODE: 'dir_not_found',
       FILE_NOT_FOUND: 'File "{0}" not found',
-      FILE_NOT_FOUND_CODE: 'file_not_found'
+      FILE_NOT_FOUND_CODE: 'file_not_found',
+      FILE_NOT_VALID: 'File "{0}" not valid',
+      FILE_NOT_VALID_CODE: 'file_not_valid'
     }
   },
   messages: {
@@ -98,6 +103,7 @@ module.exports = {
       CHECKING_DEPENDENCIES: 'Ensuring dependencies are loaded...',
       COMPONENT_INITED: 'Component "{0}" created',
       COMPRESSING: 'Compressing -> {0}',
+      COMPRESSED: 'Compressed -> {0}',
       ENTER_PASSWORD: 'Enter password:',
       ENTER_USERNAME: 'Enter username:',
       USING_CREDS: 'Using specified credentials',
@@ -105,7 +111,10 @@ module.exports = {
       HOT_RELOADING_DISABLED: 'OC dev is running with hot reloading disabled so changes will be ignored',
       INSTALLING_DEPS: 'Trying to install missing modules: {0}\nIf you aren\'t connected to the internet, or npm isn\'t configured then this step will fail',
       MOCKED_PLUGIN: 'Mock for plugin has been registered: {0} () => {1}',
+      NO_SUCH_COMMAND: 'No such command \'{0}\'',
+      NOT_VALID_REGISTRY_COMMAND: 'Not valid command: got {0}, allowed values: add, ls, remove',
       PACKAGING: 'Packaging -> {0}',
+      PACKAGED: 'Packaged -> {0}',
       PACKAGING_COMPONENTS: 'Packaging components...',
       PREVIEW_STARTED_AT_URL: 'Component\'s preview started at url: {0}',
       PUBLISHED: 'Published -> {0}',

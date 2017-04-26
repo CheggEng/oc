@@ -1,27 +1,27 @@
 'use strict';
 
-var Cache = require('nice-cache');
+const Cache = require('nice-cache');
 
-var GetComponentsData = require('./get-components-data');
-var ProcessClientResponse = require('./process-client-responses');
-var RenderComponents = require('./render-components');
-var sanitiser = require('./sanitiser');
-var _ = require('./utils/helpers');
+const GetComponentsData = require('./get-components-data');
+const ProcessClientResponse = require('./process-client-responses');
+const RenderComponents = require('./render-components');
+const sanitiser = require('./sanitiser');
+const _ = require('./utils/helpers');
 
 module.exports = function(config, renderTemplate){
 
-  var cache = new Cache(config.cache),
-      getComponentsData = new GetComponentsData(config),
-      renderComponents = new RenderComponents(cache, renderTemplate),
-      processClientReponses = new ProcessClientResponse(cache, config);
+  const cache = new Cache(config.cache),
+    getComponentsData = new GetComponentsData(config),
+    renderComponents = new RenderComponents(cache, renderTemplate),
+    processClientReponses = new ProcessClientResponse(cache, config);
 
   return function(components, options, callback){
 
     options = sanitiser.sanitiseGlobalRenderOptions(options, config);
 
-    var toDo = [];
+    const toDo = [];
 
-    _.each(components, function(component, i){
+    _.each(components, (component, i) => {
       component.version = component.version || config.components[component.name];
       toDo.push({
         component: component,
@@ -32,14 +32,14 @@ module.exports = function(config, renderTemplate){
       });
     });
 
-    getComponentsData(toDo, options, function(){
-      renderComponents(toDo, options, function(){
-        processClientReponses(toDo, options, function(){
-          var errors = [], 
-              results = [],
-              hasErrors = false;
-        
-          _.each(toDo, function(action){
+    getComponentsData(toDo, options, () => {
+      renderComponents(toDo, options, () => {
+        processClientReponses(toDo, options, () => {
+          const errors = [],
+            results = [];
+          let hasErrors = false;
+
+          _.each(toDo, (action) => {
             if(action.result.error) {
               hasErrors = true;
             }

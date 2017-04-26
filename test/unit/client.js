@@ -1,17 +1,16 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const sinon = require('sinon');
 
-describe('client', function(){
+describe('client', () => {
 
-  var validatorStub,
-      client,
-      Client,
-      init;
+  let validatorStub,
+    Client,
+    init;
 
-  var initialise = function(){
+  const initialise = function(){
 
     validatorStub = sinon.stub();
     Client = injectr('../../client/src/index.js', {
@@ -19,14 +18,14 @@ describe('client', function(){
     }, { __dirname: '/something/', console: console });
   };
 
-  describe('when not correctly initialised', function(){    
-    before(function(){
+  describe('when not correctly initialised', () => {
+    before(() => {
       initialise();
       validatorStub.returns({ isValid: false, error: 'argh!' });
-      init = function(){ client = new Client(); };
+      init = function(){ Client(); };
     });
 
-    it('should throw an exception', function(){
+    it('should throw an exception', () => {
       expect(init).to.throw('argh!');
     });
   });

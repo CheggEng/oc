@@ -1,12 +1,12 @@
 'use strict';
 
-var format = require('stringformat');
-var _ = require('underscore');
+const format = require('stringformat');
+const _ = require('lodash');
 
-var strings = require('../../../resources');
+const strings = require('../../../resources');
 
-var validateParameter = function(parameter, expectedType){
-  var expected = expectedType.toLowerCase();
+const validateParameter = function(parameter, expectedType){
+  const expected = expectedType.toLowerCase();
 
   if(expected === 'boolean'){
     return _.isBoolean(parameter);
@@ -21,16 +21,16 @@ var validateParameter = function(parameter, expectedType){
 
 module.exports = function(requestParameters, expectedParameters){
 
-  var result = { isValid: true, errors: {} },
-      mandatoryParameters = [];
+  const result = { isValid: true, errors: {} },
+    mandatoryParameters = [];
 
-  _.forEach(expectedParameters, function(expectedParameter, expectedParameterName){
+  _.forEach(expectedParameters, (expectedParameter, expectedParameterName) => {
     if(expectedParameter.mandatory){
       mandatoryParameters.push(expectedParameterName);
     }
   }, this);
 
-  _.forEach(mandatoryParameters, function(mandatoryParameterName){
+  _.forEach(mandatoryParameters, (mandatoryParameterName) => {
     if(!_.has(requestParameters, mandatoryParameterName)){
       if(!result.errors.mandatory){
         result.errors.mandatory = {};
@@ -41,10 +41,10 @@ module.exports = function(requestParameters, expectedParameters){
     }
   }, this);
 
-  _.forEach(requestParameters, function(requestParameter, requestParameterName){
+  _.forEach(requestParameters, (requestParameter, requestParameterName) => {
     if(_.has(expectedParameters, requestParameterName)){
-      
-      var expectedType = expectedParameters[requestParameterName].type;
+
+      const expectedType = expectedParameters[requestParameterName].type;
 
       if(!validateParameter(requestParameter, expectedType)){
         if(!result.errors.types){
@@ -58,13 +58,11 @@ module.exports = function(requestParameters, expectedParameters){
   }, this);
 
   result.errors.message = (function(){
-    var errorString = '';
+    let errorString = '';
 
     if(_.keys(result.errors.mandatory).length > 0){
 
-      var missingParams = _.map(result.errors.mandatory, function(mandatoryParameter, mandatoryParameterName){
-        return mandatoryParameterName + ', ';
-      }).join('').slice(0, -2);
+      const missingParams = _.map(result.errors.mandatory, (mandatoryParameter, mandatoryParameterName) => mandatoryParameterName + ', ').join('').slice(0, -2);
 
       errorString += format(strings.errors.registry.MANDATORY_PARAMETER_MISSING, missingParams);
     }
@@ -74,12 +72,10 @@ module.exports = function(requestParameters, expectedParameters){
         errorString += '; ';
       }
 
-      var badParams = _.map(result.errors.types, function(parameter, parameterName){
-        return parameterName + ', ';
-      }).join('').slice(0, -2);
+      const badParams = _.map(result.errors.types, (parameter, parameterName) => parameterName + ', ').join('').slice(0, -2);
 
       errorString += format(strings.errors.registry.PARAMETER_WRONG_FORMAT, badParams);
-    } 
+    }
     return errorString;
   }());
 

@@ -1,50 +1,42 @@
 'use strict';
 
-var fs = require('fs-extra');
-var path = require('path');
-var _ = require('underscore');
+const fs = require('fs-extra');
+const path = require('path');
+const _ = require('lodash');
 
-module.exports = function(dependencies){
-  var logger = dependencies.logger;
+module.exports = function(){
+
   return function(componentsDir, callback){
 
+    const isOcComponent = function(file){
+
+      const filePath = path.resolve(componentsDir, file),
+        packagePath = path.join(filePath, 'package.json');
+      let content;
+
+      try {
+        content = fs.readJsonSync(packagePath);
+      }
+      catch(err)
+      {
+        return false;
+      }
+
+      const packagedProperty = content.oc && content.oc.packaged;
+
+      return _.isUndefined(packagedProperty);
+    };
+
+    let dirContent;
+
     try {
-      var components = fs.readdirSync(componentsDir).filter(function(file){
-
-        var filePath = path.resolve(componentsDir, file),
-            isDir = fs.lstatSync(filePath).isDirectory(),
-            packagePath = path.join(filePath, 'package.json');
-
-        if(!isDir || !fs.existsSync(packagePath)){
-          return false;
-        }
-
-        var content;
-
-        try {
-          content = fs.readJsonSync(packagePath);
-        }
-        catch(err)
-        {
-          logger.log(('error reading ' + packagePath + ' ' + err.toString()).red);
-          return false;
-        }
-
-        if(!content.oc || !!content.oc.packaged){
-          return false;
-        }
-
-        return true;
-      });
-
-      var fullPathComponents = _.map(components, function(component){
-        return path.resolve(componentsDir, component);
-      });
-
-      callback(null, fullPathComponents);
-
+      dirContent = fs.readdirSync(componentsDir);
     } catch(err){
-      return callback(err);
+      return callback(null, []);
     }
+
+    const components = dirContent.filter(isOcComponent).map((component) => path.resolve(componentsDir, component));
+
+    callback(null, components);
   };
 };

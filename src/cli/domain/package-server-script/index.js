@@ -1,35 +1,28 @@
 'use strict';
 
-var fs = require('fs-extra');
-var path = require('path');
-var hashBuilder = require('../../../utils/hash-builder');
-var bundle = require('./bundle');
+const fs = require('fs-extra');
+const path = require('path');
 
-var webpackDefaults =  {
-  stats: {
-    chunks: false,
-    colors: true,
-    version: false,
-    hash: false
-  }
-};
+const bundle = require('./bundle');
+const hashBuilder = require('../../../utils/hash-builder');
 
 module.exports = function packageServerScript(params, callback){
-  var fileName = 'server.js';
-  var publishPath = params.publishPath;
+  const fileName = 'server.js';
+  const publishPath = params.publishPath;
+  const webpackParams = { stats: params.verbose ? 'verbose' : 'errors-only' };
 
-  var bundleParams = {
-    webpack: params.webpack || webpackDefaults,
+  const bundleParams = {
+    webpack: params.webpack || webpackParams,
     dependencies: params.dependencies || {},
     fileName: fileName,
     dataPath: path.join(params.componentPath, params.ocOptions.files.data)
   };
 
-  bundle(bundleParams, function(err, bundledServer){
+  bundle(bundleParams, (err, bundledServer) => {
     if (err) {
       return callback(err);
     } else {
-      fs.writeFile(path.join(publishPath, fileName), bundledServer, function(err, res){
+      fs.writeFile(path.join(publishPath, fileName), bundledServer, (err) => {
         callback(err, {
           type: 'node.js',
           hashKey: hashBuilder.fromString(bundledServer),

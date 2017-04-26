@@ -1,30 +1,19 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var path = require('path');
-var sinon = require('sinon');
-var _ = require('underscore');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const path = require('path');
+const sinon = require('sinon');
+const _ = require('lodash');
 
-var initialise = function(){
+const initialise = function(){
 
-  var loggerMock = {
-    log: sinon.stub()
-  };
-
-  var fsMock = {
-    existsSync: sinon.stub(),
-    lstatSync: sinon.stub(),
-    mkdirSync: sinon.spy(),
+  const fsMock = {
     readdirSync: sinon.stub(),
-    readFileSync: sinon.stub(),
-    readJson: sinon.stub(),
-    readJsonSync: sinon.stub(),
-    writeFile: sinon.stub().yields(null, 'ok'),
-    writeJson: sinon.stub().yields(null, 'ok')
+    readJsonSync: sinon.stub()
   };
 
-  var pathMock = {
+  const pathMock = {
     extname: path.extname,
     join: path.join,
     resolve: function(){
@@ -32,28 +21,28 @@ var initialise = function(){
     }
   };
 
-  var GetComponentsByDir = injectr('../../src/cli/domain/get-components-by-dir.js', {
+  const GetComponentsByDir = injectr('../../src/cli/domain/get-components-by-dir.js', {
     'fs-extra': fsMock,
     path: pathMock
   }, { __dirname: '' });
 
-  var local = new GetComponentsByDir({ logger: loggerMock });
+  const local = new GetComponentsByDir();
 
-  return { local: local, fs: fsMock, logger: loggerMock };
+  return { local: local, fs: fsMock };
 };
 
-var executeComponentsListingByDir = function(local, callback){
+const executeComponentsListingByDir = function(local, callback){
   return local('.', callback);
 };
 
-describe('cli : domain : get-components-by-dir', function(){
+describe('cli : domain : get-components-by-dir', () => {
 
-  describe('when getting components from dir', function(){
+  describe('when getting components from dir', () => {
 
-    var error, result;
-    beforeEach(function(done){
+    let error, result;
+    beforeEach((done) => {
 
-      var data = initialise();
+      const data = initialise();
 
       data.fs.readdirSync.onCall(0).returns([
         'a-component',
@@ -62,65 +51,88 @@ describe('cli : domain : get-components-by-dir', function(){
         '_package'
       ]);
 
-      data.fs.lstatSync.onCall(0).returns({ isDirectory: function(){ return true; }});
-      data.fs.existsSync.onCall(0).returns(true);
       data.fs.readJsonSync.onCall(0).returns({ oc: {}});
+      data.fs.readJsonSync.onCall(1).throws(new Error('ENOENT: no such file or directory'));
+      data.fs.readJsonSync.onCall(2).throws(new Error('ENOENT: no such file or directory'));
+      data.fs.readJsonSync.onCall(3).returns({ oc: { packaged: true }});
 
-      data.fs.lstatSync.onCall(1).returns({ isDirectory: function(){ return true; }});
-      data.fs.existsSync.onCall(1).returns(false);
-
-      data.fs.lstatSync.onCall(2).returns({ isDirectory: function(){ return false; }});
-
-      data.fs.lstatSync.onCall(3).returns({ isDirectory: function(){ return true; }});
-      data.fs.existsSync.onCall(2).returns(true);
-      data.fs.readJsonSync.onCall(1).returns({ oc: { packaged: true }});
-
-      executeComponentsListingByDir(data.local, function(err, res){
+      executeComponentsListingByDir(data.local, (err, res) => {
         error = err;
         result = res;
         done();
       });
     });
 
-    it('should add version to package.json file', function(){
+    it('should not error', () => {
+      expect(error).to.be.null;
+    });
+
+    it('should get the correct list', () => {
       expect(result).to.eql(['./a-component']);
     });
   });
 
-  describe('when reading a broken package.json', function(){
+  describe('when reading a broken package.json', () => {
 
-    var error, result, logger;
-    beforeEach(function(done){
+    let error, result;
+    beforeEach((done) => {
 
-      var data = initialise();
+      const data = initialise();
 
       data.fs.readdirSync.onCall(0).returns([
         'a-broken-component',
         'another-component'
       ]);
 
-      data.fs.lstatSync.onCall(0).returns({ isDirectory: function(){ return true; }});
-      data.fs.existsSync.onCall(0).returns(true);
       data.fs.readJsonSync.onCall(0).throws(new Error('syntax error: fubar'));
-
-      data.fs.lstatSync.onCall(1).returns({ isDirectory: function(){ return true; }});
-      data.fs.existsSync.onCall(1).returns(true);
       data.fs.readJsonSync.onCall(1).returns({ oc: { }});
 
-      executeComponentsListingByDir(data.local, function(err, res){
+      executeComponentsListingByDir(data.local, (err, res) => {
         error = err;
         result = res;
-        logger = data.logger;
         done();
       });
     });
 
-    it('should handle the error and continue loading other components', function(){
-      expect(result).to.eql(['./another-component']);
+    it('should not error', () => {
+      expect(error).to.be.null;
     });
 
-    it('should log the error', function(){
-      expect(logger.log.called).to.eql(true);
+    it('should get the correct list', () => {
+      expect(result).to.eql(['./another-component']);
+    });
+  });
+
+  describe('when finds no components', () => {
+
+    let error, result;
+    beforeEach((done) => {
+
+      const data = initialise();
+
+      data.fs.readdirSync.onCall(0).returns([
+        'a-broken-component',
+        'not-a-component-dir',
+        'file.json'
+      ]);
+
+      data.fs.readJsonSync.onCall(0).throws(new Error('syntax error: fubar'));
+      data.fs.readJsonSync.onCall(1).throws(new Error('ENOENT: no such file or directory'));
+      data.fs.readJsonSync.onCall(2).throws(new Error('ENOENT: no such file or directory'));
+
+      executeComponentsListingByDir(data.local, (err, res) => {
+        error = err;
+        result = res;
+        done();
+      });
+    });
+
+    it('should not error', () => {
+      expect(error).to.be.null;
+    });
+
+    it('should get an empty list', () => {
+      expect(result).to.eql([]);
     });
   });
 });

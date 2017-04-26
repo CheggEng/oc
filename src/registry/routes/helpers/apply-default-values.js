@@ -1,14 +1,13 @@
 'use strict';
 
-var _ = require('underscore');
+const _ = require('lodash');
 
 module.exports = function(requestParameters, expectedParameters) {
-  var optionalParametersWithDefaults = _.pick(expectedParameters, function(parameter){
-    return !(parameter.mandatory || _.isUndefined(parameter.default));
-  });
-  
-  _.forEach(optionalParametersWithDefaults, function(expectedParameter, expectedParameterName){
-    if(!_.has(requestParameters, expectedParameterName)) {
+  const optionalParametersWithDefaults = _.pickBy(expectedParameters, (parameter) => !(parameter.mandatory || _.isUndefined(parameter.default)));
+
+  _.forEach(optionalParametersWithDefaults, (expectedParameter, expectedParameterName) => {
+    const param = requestParameters[expectedParameterName];
+    if(_.isUndefined(param) || _.isNull(param)) {
       requestParameters[expectedParameterName] = expectedParameter.default;
     }
   });

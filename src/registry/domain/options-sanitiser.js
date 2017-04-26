@@ -1,13 +1,12 @@
 'use strict';
 
-var express = require('express');
-var _ = require('underscore');
+const _ = require('lodash');
 
-var settings = require('../../resources/settings');
-var auth = require('./authentication');
+const settings = require('../../resources/settings');
+const auth = require('./authentication');
 
 module.exports = function(input){
-  var options = _.clone(input);
+  const options = _.clone(input);
 
   if(!options.publishAuth){
     options.beforePublish = function(req, res, next){ next(); };
@@ -37,8 +36,13 @@ module.exports = function(input){
     options.verbosity = 0;
   }
 
+  if(!_.isUndefined(options.fallbackRegistryUrl) &&
+    _.last(options.fallbackRegistryUrl) !== '/'){
+    options.fallbackRegistryUrl += '/';
+  }
+
   options.customHeadersToSkipOnWeakVersion = (options.customHeadersToSkipOnWeakVersion || [])
-    .map(function(s) { return s.toLowerCase(); });
+    .map((s) => s.toLowerCase());
 
   options.port = process.env.PORT || options.port;
 

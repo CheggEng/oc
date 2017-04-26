@@ -1,8 +1,8 @@
 'use strict';
 
-var _ = require('underscore');
+const _ = require('lodash');
 
-var sanitise = {
+const sanitise = {
   booleanParameter: function(variable){
     if(_.isString(variable)){
       if(variable === 'true'){
@@ -17,32 +17,37 @@ var sanitise = {
   numberParameter: function(variable){
     return variable*1;
   },
+  stringParameter: function(variable){
+    return _.isNull(variable) ? '' : variable;
+  },
   parameter: function(variable, type){
     if(type === 'boolean'){
       return sanitise.booleanParameter(variable);
     } else if(type === 'number'){
       return sanitise.numberParameter(variable);
+    } else if(type === 'string'){
+      return sanitise.stringParameter(variable);
     }
 
     return variable;
   }
 };
 
-var toRemove = ['__ocAcceptLanguage'];
+const toRemove = ['__ocAcceptLanguage'];
 
 module.exports = {
   sanitiseComponentParameters: function(requestParameters, expectedParameters){
 
-    var result = {};
+    const result = {};
 
-    _.forEach(requestParameters, function(requestParameter, requestParameterName){
+    _.forEach(requestParameters, (requestParameter, requestParameterName) => {
       if(_.has(expectedParameters, requestParameterName)){
-        
-        var expectedType = expectedParameters[requestParameterName].type,
-            sanitised = sanitise.parameter(requestParameter, expectedType);
+
+        const expectedType = expectedParameters[requestParameterName].type,
+          sanitised = sanitise.parameter(requestParameter, expectedType);
 
         result[requestParameterName] = sanitised;
-      } else if(!_.contains(toRemove, requestParameterName)){
+      } else if(!_.includes(toRemove, requestParameterName)){
         result[requestParameterName] = requestParameter;
       }
     }, this);

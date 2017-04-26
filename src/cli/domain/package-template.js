@@ -1,67 +1,66 @@
 'use strict';
 
-var format = require('stringformat');
-var fs = require('fs-extra');
-var handlebars = require('handlebars');
-var jade = require('jade');
-var path = require('path');
-var uglifyJs = require('uglify-js');
+const format = require('stringformat');
+const fs = require('fs-extra');
+const path = require('path');
+const uglifyJs = require('uglify-js');
 
-var hashBuilder = require('../../utils/hash-builder');
-var strings = require('../../resources');
-var validator = require('../../registry/domain/validators');
+const hashBuilder = require('../../utils/hash-builder');
+const strings = require('../../resources');
+const requireTemplate = require('../../utils/require-template');
 
-var javaScriptizeTemplate = function(functionName, data){
+const javaScriptizeTemplate = function(functionName, data){
   return format('var {0}={0}||{};{0}.components={0}.components||{};{0}.components[\'{1}\']={2}', 'oc', functionName, data.toString());
 };
 
-var compileView = function(viewPath, type) {
-    var template = fs.readFileSync(viewPath).toString(),
-        preCompiledView;
+const compileView = function(viewPath, type, cb) {
+  const template = fs.readFileSync(viewPath).toString();
+  let ocTemplate;
 
-  if(type === 'jade'){
-    preCompiledView = jade.compileClient(template, {
-      filename: viewPath,
-      compileDebug: false,
-      name: 't'
-    }).toString().replace('function t(locals) {', 'function(locals){');
-  } else if(type === 'handlebars'){
-    preCompiledView = handlebars.precompile(template);
-  } else {
-    throw strings.errors.cli.TEMPLATE_TYPE_NOT_VALID;
+  if (type === 'jade') { type = 'oc-template-jade'; }
+  if (type === 'handlebars') { type = 'oc-template-handlebars'; }
+
+
+  try {
+    ocTemplate = requireTemplate(type);
+  } catch (err) {
+    return cb(err);
   }
 
-  var hashView = hashBuilder.fromString(preCompiledView.toString()),
-      compiledView = javaScriptizeTemplate(hashView, preCompiledView);
+  ocTemplate.compile({ template, viewPath }, (err, compiledView) => {
+    if (err) { return cb(err);}
 
-  return {
-    hash: hashView,
-    view: uglifyJs.minify(compiledView, {fromString: true}).code
-  };
+    const hashView = hashBuilder.fromString(compiledView.toString()),
+      javaScriptizedView = javaScriptizeTemplate(hashView, compiledView);
+
+    return cb(null, {
+      hash: hashView,
+      view: uglifyJs.minify(javaScriptizedView, {fromString: true}).code
+    });
+  });
 };
 
 module.exports = function(params, callback){
 
-  var viewSrc = params.ocOptions.files.template.src,
-      viewPath = path.join(params.componentPath, viewSrc),
-      compiled;
+  const viewSrc = params.ocOptions.files.template.src,
+    viewPath = path.join(params.componentPath, viewSrc);
 
   if(!fs.existsSync(viewPath)){
     return callback(format(strings.errors.cli.TEMPLATE_NOT_FOUND, viewSrc));
   }
 
   try {
-    compiled = compileView(viewPath, params.ocOptions.files.template.type);
+    compileView(viewPath, params.ocOptions.files.template.type, (err, compiled) => {
+      if (err) {
+        return callback(format('{0} compilation failed - {1}', viewSrc, err));
+      }
+      fs.writeFile(path.join(params.publishPath, 'template.js'), compiled.view, (err) => callback(err, {
+        type: params.ocOptions.files.template.type,
+        hashKey: compiled.hash,
+        src: 'template.js'
+      }));
+    });
   } catch(e){
     return callback(format('{0} compilation failed - {1}', viewSrc, e));
   }
-
-  fs.writeFile(path.join(params.publishPath, 'template.js'), compiled.view, function(err, res){
-    callback(err, {
-      type: params.ocOptions.files.template.type,
-      hashKey: compiled.hash,
-      src: 'template.js'
-    });
-  });
-
 };

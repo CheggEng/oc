@@ -1,16 +1,16 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const sinon = require('sinon');
 
-describe('client : render-components', function(){
+describe('client : render-components', () => {
 
-  var renderComponents;
+  let renderComponents;
 
-  var initialise = function(getCompiledTemplateStub){
+  const initialise = function(getCompiledTemplateStub){
 
-    var RenderComponents = injectr('../../client/src/render-components.js', {
+    const RenderComponents = injectr('../../client/src/render-components.js', {
       './get-compiled-template': function(){
         return getCompiledTemplateStub;
       }
@@ -19,22 +19,22 @@ describe('client : render-components', function(){
     renderComponents = new RenderComponents();
   };
 
-  describe('when compiled template fetch fails', function(){
-    
-    var errorExample = 'request https://cdn.com/components/1.3.5/template.js failed (' +
+  describe('when compiled template fetch fails', () => {
+
+    const errorExample = 'request https://cdn.com/components/1.3.5/template.js failed (' +
       '<?xml version="1.0" encoding="UTF-8"?><Error><Code>AccessDenied</Code><Message>' +
       'Access Denied</Message><RequestId>1234567890</RequestId><HostId>asdfghjklqwertyuiop</HostId></Error>)';
-    
-    var getCompiledTemplateStub = sinon.stub().yields({
+
+    const getCompiledTemplateStub = sinon.stub().yields({
       status: 403,
       response: {
         error: errorExample
       }
     });
 
-    var toDo;
+    let toDo;
 
-    before(function(done){
+    before((done) => {
       initialise(getCompiledTemplateStub);
 
       toDo = [{
@@ -48,11 +48,11 @@ describe('client : render-components', function(){
       renderComponents(toDo, {}, done);
     });
 
-    it('should return an error containing the details', function(){
+    it('should return an error containing the details', () => {
       expect(toDo[0].result.error.toString()).to.eql('Error: Server-side rendering failed: ' + errorExample + ' (403)');
     });
 
-    it('should schedule it to be rendered as client-side as failover', function(){
+    it('should schedule it to be rendered as client-side as failover', () => {
       expect(toDo[0].render).to.equal('client');
       expect(toDo[0].failover).to.equal(true);
     });

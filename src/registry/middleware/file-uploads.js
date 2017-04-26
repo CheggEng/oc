@@ -1,7 +1,7 @@
 'use strict';
 
-var format = require('stringformat');
-var multer = require('multer');
+const format = require('stringformat');
+const multer = require('multer');
 
 module.exports = function(req, res, next){
 
@@ -9,7 +9,7 @@ module.exports = function(req, res, next){
     return next();
   }
 
-  return multer({ 
+  return multer({
     dest: res.conf.tempDir,
     fieldSize: 10,
     rename: function(fieldname, filename){

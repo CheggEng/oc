@@ -1,14 +1,14 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var path = require('path');
-var sinon = require('sinon');
-var _ = require('underscore');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const path = require('path');
+const sinon = require('sinon');
+const _ = require('lodash');
 
-var initialise = function(){
+const initialise = function(){
 
-  var fsMock = {
+  const fsMock = {
     existsSync: sinon.stub(),
     lstatSync: sinon.stub(),
     mkdirSync: sinon.spy(),
@@ -20,7 +20,7 @@ var initialise = function(){
     writeJson: sinon.stub().yields(null, 'ok')
   };
 
-  var pathMock = {
+  const pathMock = {
     extname: path.extname,
     join: path.join,
     resolve: function(){
@@ -28,28 +28,28 @@ var initialise = function(){
     }
   };
 
-  var GetLocalNpmModules = injectr('../../src/cli/domain/get-local-npm-modules.js', {
+  const GetLocalNpmModules = injectr('../../src/cli/domain/get-local-npm-modules.js', {
     'fs-extra': fsMock,
     path: pathMock
   }, { __dirname: '' });
 
-  var local = new GetLocalNpmModules();
+  const local = new GetLocalNpmModules();
 
   return { local: local, fs: fsMock };
 };
 
-var executeGetLocalNpmModules = function(local){
+const executeGetLocalNpmModules = function(local){
   return local('.');
 };
 
-describe('cli : domain : get-local-npm-modules', function(){
+describe('cli : domain : get-local-npm-modules', () => {
 
-  describe('when reading modules from dir', function(){
+  describe('when reading modules from dir', () => {
 
-    var error, result;
-    beforeEach(function(){
+    let result;
+    beforeEach(() => {
 
-      var data = initialise();
+      const data = initialise();
 
       data.fs.readdirSync.onCall(0).returns([
         'a-module',
@@ -66,24 +66,24 @@ describe('cli : domain : get-local-npm-modules', function(){
       result = executeGetLocalNpmModules(data.local);
     });
 
-    it('should return only the folders', function(){
+    it('should return only the folders', () => {
       expect(result).to.eql(['a-module', 'another-module']);
     });
   });
 
-  describe('when node_modules directory doesn\'t exist', function(){
+  describe('when node_modules directory doesn\'t exist', () => {
 
-    var error, result;
-    beforeEach(function(){
+    let result;
+    beforeEach(() => {
 
-      var data = initialise();
+      const data = initialise();
 
       data.fs.existsSync.onCall(0).returns(false);
 
       result = executeGetLocalNpmModules(data.local);
     });
 
-    it('should return an empty array', function(){
+    it('should return an empty array', () => {
       expect(result).to.eql([]);
     });
   });

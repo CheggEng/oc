@@ -1,9 +1,10 @@
 /*jshint camelcase:false */
 'use strict';
 
-var webpack = require('webpack');
-var path = require('path');
-var externalDependenciesHandlers = require('./externalDependenciesHandlers');
+const webpack = require('webpack');
+const path = require('path');
+const externalDependenciesHandlers = require('./externalDependenciesHandlers');
+const BabiliPlugin = require('babili-webpack-plugin');
 
 module.exports = function webpackConfigGenerator(params){
   return {
@@ -43,6 +44,7 @@ module.exports = function webpackConfigGenerator(params){
       ]
     },
     plugins: [
+      new BabiliPlugin(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production')
       })

@@ -1,4 +1,6 @@
 'use strict';
+/* eslint no-var: 'off' */
+/* eslint prefer-arrow-callback: 'off' */
 
 var oc = oc || {};
 oc.cmd = oc.cmd || [];
@@ -12,8 +14,8 @@ oc.cmd.push(function(){
   $('.refresh-preview').click(function(){
 
     var splitted = $('#href').val().split('?'),
-        url = splitted[0],
-        lang = $('#lang').val();
+      url = splitted[0],
+      lang = $('#lang').val();
 
     if(url.slice(-1) !== '/'){
       url += '/';

@@ -1,14 +1,14 @@
 'use strict';
 
-var fs = require('fs-extra');
-var path = require('path');
-var semver = require('semver');
+const fs = require('fs-extra');
+const path = require('path');
+const semver = require('semver');
 
-var packageJson = require('../package');
+const packageJson = require('../package');
 
-module.exports = function(grunt, taskObject){
+module.exports = function(grunt){
 
-  grunt.registerTask('version', 'Does the version upgrade', function(versionType){
+  grunt.registerTask('version', 'Does the version upgrade', (versionType) => {
 
     packageJson.version = semver.inc(packageJson.version, versionType);
     grunt.config.set('version', packageJson.version);
@@ -18,8 +18,8 @@ module.exports = function(grunt, taskObject){
     fs.writeJsonSync(path.join(__dirname, '../package.json'), packageJson, {spaces: 2});
 
     grunt.task.run([
-      'test-local-silent',
       'build',
+      'test-local-silent',
       'git-stage'
     ]);
   });

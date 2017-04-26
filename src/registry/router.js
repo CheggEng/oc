@@ -1,32 +1,30 @@
 'use strict';
 
-var format = require('stringformat');
-var _ = require('underscore');
+const format = require('stringformat');
+const _ = require('lodash');
 
-var ComponentRoute = require('./routes/component');
-var ComponentsRoute = require('./routes/components');
-var ComponentInfoRoute = require('./routes/component-info');
-var ComponentPreviewRoute = require('./routes/component-preview');
-var ListComponentsRoute = require('./routes/list-components');
-var PublishRoute = require('./routes/publish');
-var settings = require('../resources/settings');
-var StaticRedirectorRoute = require('./routes/static-redirector');
+const ComponentRoute = require('./routes/component');
+const ComponentsRoute = require('./routes/components');
+const ComponentInfoRoute = require('./routes/component-info');
+const ComponentPreviewRoute = require('./routes/component-preview');
+const ListComponentsRoute = require('./routes/list-components');
+const PublishRoute = require('./routes/publish');
+const settings = require('../resources/settings');
+const StaticRedirectorRoute = require('./routes/static-redirector');
 
 module.exports.create = function(app, conf, repository){
-  var routes = {
+  const routes = {
     component: new ComponentRoute(conf, repository),
     components: new ComponentsRoute(conf, repository),
-    componentInfo: new ComponentInfoRoute(repository),
-    componentPreview: new ComponentPreviewRoute(repository),
+    componentInfo: new ComponentInfoRoute(conf, repository),
+    componentPreview: new ComponentPreviewRoute(conf, repository),
     listComponents: new ListComponentsRoute(repository),
     publish: new PublishRoute(repository),
     staticRedirector: new StaticRedirectorRoute(repository)
   };
 
-  app.use(app.router);
-
   if(conf.prefix !== '/'){
-    app.get('/', function(req, res){ res.redirect(conf.prefix); });
+    app.get('/', (req, res) => { res.redirect(conf.prefix); });
     app.get(conf.prefix.substr(0, conf.prefix.length - 1), routes.listComponents);
   }
 
@@ -51,8 +49,8 @@ module.exports.create = function(app, conf, repository){
   app.get(conf.prefix + ':componentName/:componentVersion', routes.component);
   app.get(conf.prefix + ':componentName', routes.component);
 
-  if(!!conf.routes){
-    _.forEach(conf.routes, function(route){
+  if(conf.routes){
+    _.forEach(conf.routes, (route) => {
       app[route.method.toLowerCase()](route.route, route.handler);
     });
   }

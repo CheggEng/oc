@@ -1,50 +1,51 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var sinon = require('sinon');
-var _ = require('underscore');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const sinon = require('sinon');
+const _ = require('lodash');
 
-describe('registry : routes : helpers : get-component', function(){
+describe('registry : routes : helpers : get-component', () => {
+  const fireStub = sinon.stub(),
+    mockedComponents = require('../fixtures/mocked-components'),
+    GetComponent = injectr('../../src/registry/routes/helpers/get-component.js', {
+      '../../domain/events-handler': {
+        on: _.noop,
+        fire: fireStub
+      }
+    }, { console: console, Buffer: Buffer, setTimeout: setTimeout });
 
-  var fireStub = sinon.stub(),
-      mockedComponents = require('../fixtures/mocked-components'),
-      mockedRepository,
-      getComponent,
-      GetComponent = injectr('../../src/registry/routes/helpers/get-component.js', {
-        '../../domain/events-handler': {
-          on: _.noop,
-          fire: fireStub
-        }
-      }, { console: console, Buffer: Buffer, setTimeout: setTimeout });
-  
-  var initialise = function(params){
+  let mockedRepository,
+    getComponent;
+
+  const initialise = function(params){
     mockedRepository = {
       getCompiledView: sinon.stub().yields(null, params.view),
       getComponent: sinon.stub().yields(null, params.package),
       getDataProvider: sinon.stub().yields(null, params.data),
+      getTemplates: sinon.stub(),
       getStaticFilePath: sinon.stub().returns('//my-cdn.com/files/')
     };
   };
 
-  describe('when getting a component', function(){
+  describe('when getting a component', () => {
 
-    before(function(done){
+    before((done) => {
       initialise(mockedComponents['async-error2-component']);
       getComponent = new GetComponent({}, mockedRepository);
 
-     getComponent({
+      getComponent({
         name: 'async-error2-component',
         headers: {},
         parameters: {},
         version: '1.X.X',
         conf: { baseUrl: 'http://components.com/' }
-      }, function(response){
+      }, () => {
         done();
       });
     });
 
-    it('should fire a component-retrieved event', function(){
+    it('should fire a component-retrieved event', () => {
       expect(fireStub.args[0][0]).to.equal('component-retrieved');
       expect(fireStub.args[0][1].headers).to.eql({});
       expect(fireStub.args[0][1].name).to.equal('async-error2-component');

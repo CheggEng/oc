@@ -1,44 +1,44 @@
 'use strict';
 
-var path = require('path');
-var format = require('stringformat');
+const basicAuth = require('basic-auth-connect');
+const format = require('stringformat');
+const path = require('path');
 
-var strings = require('../../resources/');
+const strings = require('../../resources/');
 
-var builtin = {
+const builtin = {
   basic: {
     validate: function(authConfig){
-      var isValid = authConfig.username && authConfig.password;
+      const isValid = authConfig.username && authConfig.password;
       return {
-          isValid: isValid,
-          message: isValid ? '' : strings.errors.registry.CONFIGURATION_PUBLISH_BASIC_AUTH_CREDENTIALS_MISSING
+        isValid: isValid,
+        message: isValid ? '' : strings.errors.registry.CONFIGURATION_PUBLISH_BASIC_AUTH_CREDENTIALS_MISSING
       };
     },
     middleware: function(authConfig){
-      var express = require('express');
-      return express.basicAuth(authConfig.username, authConfig.password);
+      return basicAuth(authConfig.username, authConfig.password);
     }
   }
 };
 
-var scheme;
+let scheme;
 
 module.exports.validate = function(authConfig){
   if(builtin[authConfig.type]){
     scheme = builtin[authConfig.type];
   }
   else {
-    var cwd = process.cwd();
+    const cwd = process.cwd();
     module.paths.push(cwd, path.join(cwd, 'node_modules'));
 
-    var moduleName = 'oc-auth-' + authConfig.type;
+    const moduleName = 'oc-auth-' + authConfig.type;
 
     try {
       scheme = require(moduleName);
     } catch(err){
       return {
-          isValid: false,
-          message: format(strings.errors.registry.CONFIGURATION_PUBLISH_AUTH_MODULE_NOT_FOUND, moduleName)
+        isValid: false,
+        message: format(strings.errors.registry.CONFIGURATION_PUBLISH_AUTH_MODULE_NOT_FOUND, moduleName)
       };
     }
   }

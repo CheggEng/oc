@@ -1,11 +1,11 @@
 'use strict';
 
-var colors = require('colors/safe');
-var format = require('stringformat');
-var path = require('path');
-var _ = require('underscore');
+const colors = require('colors/safe');
+const format = require('stringformat');
+const path = require('path');
+const _ = require('lodash');
 
-var packageInfo = require('../components/oc-client/_package/package');
+const packageInfo = require('../components/oc-client/_package/package');
 
 module.exports = function(repository, options, callback){
 
@@ -13,11 +13,11 @@ module.exports = function(repository, options, callback){
     return callback(null, 'ok');
   }
 
-  var logger = !!options.verbosity ? console : { log: _.noop };
+  const logger = options.verbosity ? console : { log: _.noop };
 
   logger.log(format(colors.yellow('Connecting to library: {0}/{1}'), options.s3.bucket, options.s3.componentsDir));
 
-  repository.getComponentVersions('oc-client', function(err, componentInfo){
+  repository.getComponentVersions('oc-client', (err, componentInfo) => {
 
     if(err){
       return logger.log(colors.red(err));
@@ -25,16 +25,16 @@ module.exports = function(repository, options, callback){
 
     logger.log(format(colors.yellow('Ensuring oc-client@{0} is available on library...'), packageInfo.version));
 
-    if(!_.contains(componentInfo, packageInfo.version)){
+    if(!_.includes(componentInfo, packageInfo.version)){
 
       logger.log(colors.yellow('Component not found. Publishing it...'));
 
-      var pkgInfo = {
+      const pkgInfo = {
         outputFolder: path.resolve(__dirname, '../components/oc-client/_package'),
         packageJson: packageInfo
       };
-      
-      repository.publishComponent(pkgInfo, 'oc-client', packageInfo.version, function(err, res){
+
+      repository.publishComponent(pkgInfo, 'oc-client', packageInfo.version, (err, res) => {
         if(!err){
           logger.log(colors.green('Component published.'));
         } else {

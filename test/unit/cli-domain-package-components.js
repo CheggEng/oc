@@ -1,97 +1,151 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var path = require('path');
-var sinon = require('sinon');
-var _ = require('underscore');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const path = require('path');
+const sinon = require('sinon');
+const _ = require('lodash');
 
-var initialise = function(){
+describe('cli : domain : package-components', () => {
 
-  var fsMock = {
-    existsSync: sinon.stub(),
-    lstatSync: sinon.stub(),
-    mkdirSync: sinon.spy(),
-    readdirSync: sinon.stub(),
-    readFileSync: sinon.stub(),
-    readJson: sinon.stub(),
-    readJsonSync: sinon.stub(),
-    writeFile: sinon.stub().yields(null, 'ok'),
-    writeJson: sinon.stub().yields(null, 'ok')
-  };
+  let packageStaticFilesStub;
 
-  var pathMock = {
-    extname: path.extname,
-    join: path.join,
-    resolve: function(){
-      return _.toArray(arguments).join('/');
-    }
-  };
+  const initialise = function(){
 
-  var Local = injectr('../../src/cli/domain/package-components.js', {
-    'fs-extra': fsMock,
-    'uglify-js': {
-      minify: function(code){
-        return {
-          code: code
-        };
+    const fsMock = {
+      existsSync: sinon.stub(),
+      lstatSync: sinon.stub(),
+      mkdirSync: sinon.spy(),
+      readdirSync: sinon.stub(),
+      readFileSync: sinon.stub(),
+      readJson: sinon.stub(),
+      readJsonSync: sinon.stub(),
+      writeFile: sinon.stub().yields(null, 'ok'),
+      writeJson: sinon.stub().yields(null, 'ok')
+    };
+
+    const pathMock = {
+      extname: path.extname,
+      join: path.join,
+      resolve: function(){
+        return _.toArray(arguments).join('/');
       }
-    },
-    path: pathMock,
-    './package-static-files': sinon.stub().yields(null, 'ok'),
-    './package-template': sinon.stub().yields(null, { type: 'jade', src: 'template.js', hashKey: '123456'})
-  }, { __dirname: '' });
+    };
 
-  var local = new Local();
+    packageStaticFilesStub = sinon.stub().yields(null, 'ok');
 
-  return { local: local, fs: fsMock };
-};
+    const PackageComponents = injectr('../../src/cli/domain/package-components.js', {
+      'fs-extra': fsMock,
+      path: pathMock,
+      './package-static-files': packageStaticFilesStub,
+      './package-template': sinon.stub().yields(null, { type: 'jade', src: 'template.js', hashKey: '123456'})
+    }, { __dirname: ''});
 
-var executePackaging = function(local, callback){
-  return local('.', false, callback);
-};
+    const packageComponents = new PackageComponents();
 
-describe('cli : domain : local', function(){
+    return { packageComponents: packageComponents, fs: fsMock };
+  };
 
-  describe('when packaging', function(){
+  const executePackaging = function(packageComponents, minify, callback){
+    return packageComponents({
+      componentPath: '.',
+      minify: minify,
+      verbose: false
+    }, callback);
+  };
 
-    describe('when component is valid', function(){
+  describe('when packaging', () => {
 
-      var component;
-      beforeEach(function(done){
+    describe('when component is valid', () => {
 
-        var data = initialise();
+      describe('when minify=true', () => {
 
-        component = {
-          name: 'helloworld',
-          oc: {
-            files: {
-              template: {
-                type: 'jade',
-                src: 'template.jade'
+        let component;
+        beforeEach((done) => {
+
+          const data = initialise();
+
+          component = {
+            name: 'helloworld',
+            oc: {
+              files: {
+                static: ['css'],
+                template: {
+                  type: 'jade',
+                  src: 'template.jade'
+                }
               }
-            }
-          },
-          dependencies: {}
-        };
+            },
+            dependencies: {}
+          };
 
-        data.fs.existsSync.returns(true);
-        data.fs.readJsonSync.onCall(0).returns(component);
-        data.fs.readJsonSync.onCall(1).returns({ version: '1.2.3' });
+          data.fs.existsSync.returns(true);
+          data.fs.readJsonSync.onCall(0).returns(component);
+          data.fs.readJsonSync.onCall(1).returns({ version: '1.2.3' });
 
-        executePackaging(data.local, done);
+          executePackaging(data.packageComponents, true, done);
+        });
+
+        it('should add version to package.json file', () => {
+          expect(component.oc.version).to.eql('1.2.3');
+        });
+
+        it('should mark the package.json as a packaged', () => {
+          expect(component.oc.packaged).to.eql(true);
+        });
+
+        it('should save hash for template in package.json', () => {
+          expect(component.oc.files.template.hashKey).not.be.empty;
+        });
+
+        it('should minify static resources', () => {
+          expect(packageStaticFilesStub.args[0][0].minify).to.eql(true);
+        });
       });
 
-      it('should add version to package.json file', function(){
-        expect(component.oc.version).to.eql('1.2.3');
-      });
+      describe('when minify=false', () => {
 
-      it('should mark the package.json as a packaged', function(){
-        expect(component.oc.packaged).to.eql(true);
-      });
+        let component;
+        beforeEach((done) => {
 
-      it('should save hash for template in package.json', function(){
-        expect(component.oc.files.template.hashKey).not.be.empty;
+          const data = initialise();
+
+          component = {
+            name: 'helloworld',
+            oc: {
+              files: {
+                static: ['css'],
+                template: {
+                  type: 'jade',
+                  src: 'template.jade'
+                }
+              }
+            },
+            dependencies: {}
+          };
+
+          data.fs.existsSync.returns(true);
+          data.fs.readJsonSync.onCall(0).returns(component);
+          data.fs.readJsonSync.onCall(1).returns({ version: '1.2.3' });
+
+          executePackaging(data.packageComponents, false, done);
+        });
+
+        it('should add version to package.json file', () => {
+          expect(component.oc.version).to.eql('1.2.3');
+        });
+
+        it('should mark the package.json as a packaged', () => {
+          expect(component.oc.packaged).to.eql(true);
+        });
+
+        it('should save hash for template in package.json', () => {
+          expect(component.oc.files.template.hashKey).not.be.empty;
+        });
+
+        it('should minify static resources', () => {
+          expect(packageStaticFilesStub.args[0][0].minify).to.eql(false);
+        });
       });
     });
   });

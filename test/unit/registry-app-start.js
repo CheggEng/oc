@@ -1,18 +1,18 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const sinon = require('sinon');
 
-var getAppStart = function(mockedRepository, options, callback){
-  var appStart = injectr('../../src/registry/app-start.js', {
-        '../components/oc-client/_package/package': { version: '1.2.3' }
-      }, { console: { log: sinon.stub() }, __dirname: '.'});
-      
+const getAppStart = function(mockedRepository, options, callback){
+  const appStart = injectr('../../src/registry/app-start.js', {
+    '../components/oc-client/_package/package': { version: '1.2.3' }
+  }, { console: { log: sinon.stub() }, __dirname: '.'});
+
   return appStart(mockedRepository, options, callback);
 };
 
-var basicOptions = {
+const basicOptions = {
   s3: {
     bucket: 'test',
     path: 'path',
@@ -20,38 +20,38 @@ var basicOptions = {
   }
 };
 
-describe('registry : app-start', function(){
+describe('registry : app-start', () => {
 
-  describe('when registry starting', function(){
+  describe('when registry starting', () => {
 
-    describe('when not in local mode', function(){
+    describe('when not in local mode', () => {
 
-      describe('when oc-client found on library', function(){
+      describe('when oc-client found on library', () => {
 
-        it('should not publish it', function(done){
+        it('should not publish it', (done) => {
 
-          var mockedRepository = {
+          const mockedRepository = {
             getComponentVersions: sinon.stub().yields(null, ['1.2.3']),
             publishComponent: sinon.spy()
           };
 
-          getAppStart(mockedRepository, basicOptions, function(err, res){
+          getAppStart(mockedRepository, basicOptions, () => {
             expect(mockedRepository.publishComponent.called).to.be.false;
             done();
           });
         });
       });
 
-      describe('when oc-client not found on library', function(){
+      describe('when oc-client not found on library', () => {
 
-        it('should publish it', function(done){
+        it('should publish it', (done) => {
 
-          var mockedRepository = {
+          const mockedRepository = {
             getComponentVersions: sinon.stub().yields(null, ['1.0.0']),
             publishComponent: sinon.stub().yields(null, 'ok')
           };
 
-          getAppStart(mockedRepository, basicOptions, function(err, res){
+          getAppStart(mockedRepository, basicOptions, () => {
             expect(mockedRepository.publishComponent.called).to.be.true;
             done();
           });

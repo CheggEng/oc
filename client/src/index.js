@@ -1,21 +1,21 @@
 'use strict';
 
-var ComponentsRenderer = require('./components-renderer');
-var GetComponentsInfo = require('./get-components-info');
+const ComponentsRenderer = require('./components-renderer');
+const GetComponentsInfo = require('./get-components-info');
 
-var sanitiser = require('./sanitiser');
-var TemplateRenderer = require('./template-renderer');
-var validator = require('./validator');
-var Warmup = require('./warmup');
-var _ = require('./utils/helpers');
+const sanitiser = require('./sanitiser');
+const TemplateRenderer = require('./template-renderer');
+const validator = require('./validator');
+const Warmup = require('./warmup');
+const _ = require('./utils/helpers');
 
 module.exports = function(conf){
 
-  var config = sanitiser.sanitiseConfiguration(conf),
-      validationResult = validator.validateConfiguration(config),
-      renderTemplate = new TemplateRenderer(),
-      renderComponents = new ComponentsRenderer(config, renderTemplate),
-      getComponentsInfo = new GetComponentsInfo(config);
+  const config = sanitiser.sanitiseConfiguration(conf),
+    validationResult = validator.validateConfiguration(config),
+    renderTemplate = new TemplateRenderer(),
+    renderComponents = new ComponentsRenderer(config, renderTemplate),
+    getComponentsInfo = new GetComponentsInfo(config);
 
   if(!validationResult.isValid){
     throw new Error(validationResult.error);
@@ -23,11 +23,11 @@ module.exports = function(conf){
 
   return {
     init: function(options, callback){
-      var warmup = new Warmup(config, renderComponents);
+      const warmup = new Warmup(config, renderComponents);
       return warmup(options, callback);
     },
     renderComponent: function(componentName, options, callback){
-      if(_.isFunction(options)){ 
+      if(_.isFunction(options)){
         callback = options;
         options = {};
       }
@@ -36,7 +36,7 @@ module.exports = function(conf){
         name: componentName,
         version: options.version,
         parameters: options.parameters || options.params
-      }], options, function(errors, results){
+      }], options, (errors, results) => {
         if(errors) {
           return callback(errors[0], results[0]);
         }
@@ -45,11 +45,11 @@ module.exports = function(conf){
       });
     },
     renderComponents: function(components, options, callback){
-      if(_.isFunction(options)){ 
+      if(_.isFunction(options)){
         callback = options;
         options = {};
       }
-      
+
       renderComponents(components, options, callback);
     },
     getComponentsInfo: function(components, callback) {

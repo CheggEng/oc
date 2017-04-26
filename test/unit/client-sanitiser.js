@@ -1,29 +1,29 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
+const expect = require('chai').expect;
+const injectr = require('injectr');
 
-describe('client : sanitiser', function(){
+describe('client : sanitiser', () => {
 
-  var sanitiser = injectr('../../client/src/sanitiser.js', {
-    '../package': { 
+  const sanitiser = injectr('../../client/src/sanitiser.js', {
+    '../package': {
       version: '1.2.3'
     }
-  }, { process: 
-    {
-      version: 'v0.10.40',
-      platform: 'darwin',
-      arch: 'x64'
-    }
+  }, { process:
+  {
+    version: 'v0.10.40',
+    platform: 'darwin',
+    arch: 'x64'
+  }
   });
 
-  describe('when sanitising global rendering options', function(){
+  describe('when sanitising global rendering options', () => {
 
-    describe('when user-agent not already set', function(){
+    describe('when user-agent not already set', () => {
 
-      var result = sanitiser.sanitiseGlobalRenderOptions({}, {});
+      const result = sanitiser.sanitiseGlobalRenderOptions({}, {});
 
-      it('should set oc-client user-agent', function(){
+      it('should set oc-client user-agent', () => {
         expect(result.headers['user-agent']).to.equal('oc-client-1.2.3/v0.10.40-darwin-x64');
       });
     });

@@ -1,58 +1,85 @@
 'use strict';
 
-var cli = require('nomnom');
-var _ = require('underscore');
+const cli = require('yargs');
+const commands = require('./commands');
+const format = require('stringformat');
+const _ = require('lodash');
 
-var autocomplete = require('./autocomplete');
-var commands = require('./commands');
-var Local = require('./domain/local');
-var Registry = require('./domain/registry');
-var strings = require('../resources');
+const Local = require('./domain/local');
+const logger = require('./logger');
+const Registry = require('./domain/registry');
+const strings = require('../resources');
 
-var logger = {
-  log: console.log,
-  logNoNewLine: function(msg){
-    return process.stdout.write(msg.toString());
-  }
-};
-
-var dependencies = {
-  local: new Local({ logger: logger }),
-  logger: logger,
+const dependencies = {
+  local: new Local(),
+  logger,
   registry: new Registry()
 };
 
-autocomplete.init(_.keys(commands.oc));
+function validate(argv, level){
+  if(argv._.length > level &&
+    !_.includes(_.keys(commands.commands), argv._[level])) {
+    throw new Error(format(strings.messages.cli.NO_SUCH_COMMAND, argv._[level]));
+  }
 
-cli.option('completion', {
-  hidden: true,
-  callback: autocomplete.setup,
-  flag: true
+  return true;
+}
+
+function processCommand(command, commandName, cli, level, prefix){
+  prefix = prefix || '';
+  level = (level || 0) + 1;
+  const facade = require(`./facade/${prefix}${commandName}`)(dependencies);
+
+  cli
+    .command(
+      command.cmd || commandName,
+      command.description,
+      (yargs) => {
+        yargs.usage(command.usage);
+
+        if(command.options){
+          yargs.options(command.options);
+        }
+
+        if(command.commands){
+          yargs
+            .check((argv) => validate(argv, level))
+            .epilogue(strings.messages.cli.HELP_HINT);
+
+          const newPrefix = (prefix ? prefix + '-' : '') + commandName + '-';
+
+          _.mapValues(command.commands, (commandConfiguration, commandName) => {
+            processCommand(commandConfiguration, commandName, yargs, level, newPrefix);
+          });
+        }
+
+        if(command.example){
+          yargs
+            .example(
+              command.example.cmd,
+              command.example.description);
+        }
+
+        return yargs;
+      }, facade
+    );
+}
+
+_.forEach(commands.commands, (command, commandName) => {
+  processCommand(command, commandName, cli);
 });
 
-_.forEach(commands, function(commandsConfiguration, commandsConfigurationName){
+const argv = cli
+  .completion()
+  .check((argv) => validate(argv, 0))
+  .usage(commands.usage)
+  .epilogue(strings.messages.cli.HELP_HINT)
+  .help('h')
+  .alias('h', 'help')
+  .version()
+  .wrap(cli.terminalWidth())
+  .argv;
 
-  cli.script(commandsConfigurationName);
-
-  _.forEach(commandsConfiguration, function(command, commandName){
-
-    var facade = require('./facade/' + commandName)(dependencies),
-        cliCommand = cli.command(commandName).help(command.help).callback(facade),
-        c;
-
-    if(!!command.options){
-      c = 0;
-      cliCommand.options(_.object(_.keys(command.options), _.map(command.options, function(option){
-        c++;
-        return _.extend(option, {
-          list: false,
-          position: c,
-          required: (option.required === false) ? false : true
-        });
-      })));
-    }
-
-  });
-});
-
-cli.help(strings.messages.cli.HELP_HINT).parse();
+if(argv._.length === 0 ) {
+  cli.showHelp();
+}

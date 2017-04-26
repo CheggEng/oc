@@ -1,35 +1,33 @@
 'use strict';
 
-var fs = require('fs-extra');
-var path = require('path');
-var async = require('async');
-var _ = require('underscore');
+const fs = require('fs-extra');
+const path = require('path');
+const async = require('async');
+const _ = require('lodash');
 
-var packageServerScript = require('./package-server-script');
-var packageStaticFiles = require('./package-static-files');
-var packageTemplate = require('./package-template');
-var getUnixUtcTimestamp = require('../../utils/get-unix-utc-timestamp');
-var validator = require('../../registry/domain/validators');
+const packageServerScript = require('./package-server-script');
+const packageStaticFiles = require('./package-static-files');
+const packageTemplate = require('./package-template');
+const getUnixUtcTimestamp = require('../../utils/get-unix-utc-timestamp');
+const validator = require('../../registry/domain/validators');
 
 module.exports = function(){
-  return function(componentPath, minify, callback){
+  return function(options, callback){
 
-    if(_.isFunction(minify)){
-      callback = minify;
-      minify = true;
-    }
+    const componentPath = options.componentPath;
+    const minify = options.minify === true;
 
-    var files = fs.readdirSync(componentPath),
-        publishPath = path.join(componentPath, '_package');
+    const files = fs.readdirSync(componentPath),
+      publishPath = path.join(componentPath, '_package');
 
-    if(_.contains(files, '_package')){
+    if(_.includes(files, '_package')){
       fs.removeSync(publishPath);
     }
 
     fs.mkdirSync(publishPath);
 
-    var componentPackagePath = path.join(componentPath, 'package.json'),
-        ocPackagePath = path.join(__dirname, '../../../package.json');
+    const componentPackagePath = path.join(componentPath, 'package.json'),
+      ocPackagePath = path.join(__dirname, '../../../package.json');
 
     if(!fs.existsSync(componentPackagePath)){
       return callback(new Error('component does not contain package.json'));
@@ -37,8 +35,8 @@ module.exports = function(){
       return callback(new Error('error resolving oc internal dependencies'));
     }
 
-    var component = fs.readJsonSync(componentPackagePath),
-        ocInfo = fs.readJsonSync(ocPackagePath);
+    const component = fs.readJsonSync(componentPackagePath),
+      ocInfo = fs.readJsonSync(ocPackagePath);
 
     if(!validator.validateComponentName(component.name)){
       return callback(new Error('name not valid'));
@@ -53,7 +51,7 @@ module.exports = function(){
           componentPath: componentPath,
           ocOptions: component.oc,
           publishPath: publishPath
-        }, function(err, packagedTemplateInfo){
+        }, (err, packagedTemplateInfo) => {
           if(err){ return cb(err); }
 
           component.oc.files.template = packagedTemplateInfo;
@@ -72,8 +70,9 @@ module.exports = function(){
           componentPath: componentPath,
           dependencies: component.dependencies,
           ocOptions: component.oc,
-          publishPath: publishPath
-        }, function(err, packagedServerScriptInfo){
+          publishPath: publishPath,
+          verbose: options.verbose
+        }, (err, packagedServerScriptInfo) => {
           if(err){ return cb(err); }
 
           component.oc.files.dataProvider = packagedServerScriptInfo;
@@ -96,7 +95,7 @@ module.exports = function(){
           component.oc.files.static = [component.oc.files.static];
         }
 
-        fs.writeJson(path.join(publishPath, 'package.json'), component, function(err, res){
+        fs.writeJson(path.join(publishPath, 'package.json'), component, (err) => {
           cb(err, component);
         });
       },
@@ -107,9 +106,7 @@ module.exports = function(){
           publishPath: publishPath,
           minify: minify,
           ocOptions: component.oc
-        }, function(err, res){
-          return cb(err, component);
-        });
+        }, (err) => cb(err, component));
       }
     ], callback);
   };

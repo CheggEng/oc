@@ -1,14 +1,14 @@
 'use strict';
 
-var expect = require('chai').expect;
-var injectr = require('injectr');
-var path = require('path');
-var sinon = require('sinon');
-var _ = require('underscore');
+const expect = require('chai').expect;
+const injectr = require('injectr');
+const path = require('path');
+const sinon = require('sinon');
+const _ = require('lodash');
 
-var initialise = function(){
+const initialise = function(){
 
-  var fsMock = {
+  const fsMock = {
     existsSync: sinon.stub(),
     lstatSync: sinon.stub(),
     mkdirSync: sinon.spy(),
@@ -20,7 +20,7 @@ var initialise = function(){
     writeJson: sinon.stub().yields(null, 'ok')
   };
 
-  var pathMock = {
+  const pathMock = {
     extname: path.extname,
     join: path.join,
     resolve: function(){
@@ -28,17 +28,17 @@ var initialise = function(){
     }
   };
 
-  var Local = injectr('../../src/cli/domain/mock.js', {
+  const Local = injectr('../../src/cli/domain/mock.js', {
     'fs-extra': fsMock,
     path: pathMock
   }, { __dirname: '' });
 
-  var local = new Local();
+  const local = new Local();
 
   return { local: local, fs: fsMock };
 };
 
-var executeMocking = function(local, type, name, value, cb){
+const executeMocking = function(local, type, name, value, cb){
   return local({
     targetType: type,
     targetName: name,
@@ -46,12 +46,12 @@ var executeMocking = function(local, type, name, value, cb){
   }, cb);
 };
 
-describe('cli : domain : mock', function(){
+describe('cli : domain : mock', () => {
 
-  describe('when mocking a static plugin', function(){
+  describe('when mocking a static plugin', () => {
 
-    var data;
-    beforeEach(function(done){
+    let data;
+    beforeEach((done) => {
       data = initialise();
 
       data.fs.readJson.yields(null, { something: 'hello' });
@@ -60,7 +60,7 @@ describe('cli : domain : mock', function(){
       executeMocking(data.local, 'plugin', 'getValue', 'value', done);
     });
 
-    it('should add mock to oc.json', function(){
+    it('should add mock to oc.json', () => {
       expect(data.fs.writeJson.called).to.be.true;
       expect(data.fs.writeJson.args[0][1]).to.eql({
         something: 'hello',
@@ -75,10 +75,10 @@ describe('cli : domain : mock', function(){
     });
   });
 
-  describe('when mocking a static plugin using a bool value', function(){
+  describe('when mocking a static plugin using a bool value', () => {
 
-    var data;
-    beforeEach(function(done){
+    let data;
+    beforeEach((done) => {
       data = initialise();
 
       data.fs.readJson.yields(null, { something: 'hello' });
@@ -87,7 +87,7 @@ describe('cli : domain : mock', function(){
       executeMocking(data.local, 'plugin', 'isTrue', false, done);
     });
 
-    it('should add mock to oc.json', function(){
+    it('should add mock to oc.json', () => {
       expect(data.fs.writeJson.called).to.be.true;
       expect(data.fs.writeJson.args[0][1]).to.eql({
         something: 'hello',
@@ -102,10 +102,10 @@ describe('cli : domain : mock', function(){
     });
   });
 
-  describe('when mocking a dynamic plugin', function(){
+  describe('when mocking a dynamic plugin', () => {
 
-    var data;
-    beforeEach(function(done){
+    let data;
+    beforeEach((done) => {
       data = initialise();
 
       data.fs.readJson.yields(null, { something: 'hello' });
@@ -115,7 +115,7 @@ describe('cli : domain : mock', function(){
       executeMocking(data.local, 'plugin', 'getValue', './value.js', done);
     });
 
-    it('should add mock to oc.json', function(){
+    it('should add mock to oc.json', () => {
       expect(data.fs.writeJson.called).to.be.true;
       expect(data.fs.writeJson.args[0][1]).to.eql({
         something: 'hello',

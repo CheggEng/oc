@@ -1,15 +1,15 @@
 'use strict';
 
-var _ = require('underscore');
+const _ = require('lodash');
 
 module.exports = function(grunt){
 
-  var taskObject = { pkg: grunt.file.readJSON('package.json') };
+  const taskObject = { pkg: grunt.file.readJSON('package.json') };
 
-  grunt.file.expand('tasks/*.js', '!tasks/_*.js').forEach(function(file) {
-    var name = file.split('/');
+  grunt.file.expand('tasks/*.js', '!tasks/_*.js').forEach((file) => {
+    let name = file.split('/');
     name = name[name.length - 1].replace('.js', '');
-    var task = require('./' + file);
+    const task = require('./' + file);
 
     if(_.isFunction(task)) {
       task(grunt);
@@ -23,9 +23,9 @@ module.exports = function(grunt){
 
   grunt.registerTask('default', ['test-local', 'build']);
   grunt.registerTask('sauce', ['karma:sauce-linux', 'karma:sauce-osx', 'karma:sauce-windows']);
-  grunt.registerTask('test-local', ['jshint:all', 'mochaTest:unit', 'mochaTest:acceptance', 'karma:local']);
-  grunt.registerTask('test-local-silent', ['jshint:all', 'mochaTest:silent', 'karma:local']);
-  grunt.registerTask('test', ['jshint:all', 'mochaTest:unit', 'mochaTest:integration', 'mochaTest:acceptance']);
+  grunt.registerTask('test-local', ['eslint', 'mochaTest:unit', 'mochaTest:acceptance', 'karma:local']);
+  grunt.registerTask('test-local-silent', ['eslint', 'mochaTest:silent', 'karma:local']);
+  grunt.registerTask('test', ['eslint', 'mochaTest:unit', 'mochaTest:integration', 'mochaTest:acceptance']);
   grunt.registerTask('git-stage', [
     'gitadd:versionFiles',
     'gitcommit:version',

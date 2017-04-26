@@ -1,28 +1,29 @@
 'use strict';
 
-var express = require('express');
-var path = require('path');
-var _ = require('underscore');
+const bodyParser = require('body-parser');
+const errorhandler = require('errorhandler');
+const morgan = require('morgan');
+const path = require('path');
 
-var baseUrlHandler = require('./base-url-handler');
-var cors = require('./cors');
-var discoveryHandler = require('./discovery-handler');
-var fileUploads = require('./file-uploads');
-var requestHandler = require('./request-handler');
+const baseUrlHandler = require('./base-url-handler');
+const cors = require('./cors');
+const discoveryHandler = require('./discovery-handler');
+const fileUploads = require('./file-uploads');
+const requestHandler = require('./request-handler');
 
 module.exports.bind = function(app, options){
 
   app.set('port', options.port);
   app.set('json spaces', 0);
 
-  app.use(function(req, res, next){
+  app.use((req, res, next) => {
     res.conf = options;
     next();
   });
 
   app.use(requestHandler());
-  app.use(express.json());
-  app.use(express.urlencoded());
+  app.use(bodyParser.json({ inflate: true }));
+  app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cors);
   app.use(fileUploads);
   app.use(baseUrlHandler);
@@ -32,12 +33,12 @@ module.exports.bind = function(app, options){
   app.set('view engine', 'jade');
   app.set('view cache', true);
 
-  if(!!options.verbosity){
-    app.use(express.logger('dev'));
+  if(options.verbosity){
+    app.use(morgan('dev'));
   }
 
   if(options.local){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(errorhandler({ dumpExceptions: true, showStack: true }));
   }
 
   return app;

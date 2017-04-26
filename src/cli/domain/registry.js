@@ -1,20 +1,20 @@
 'use strict';
 
-var format = require('stringformat');
-var fs = require('fs-extra');
-var path = require('path');
-var request = require('minimal-request');
-var _ = require('underscore');
+const format = require('stringformat');
+const fs = require('fs-extra');
+const path = require('path');
+const request = require('minimal-request');
+const _ = require('lodash');
 
-var put = require('../../utils/put');
-var settings = require('../../resources/settings');
-var urlBuilder = require('../../registry/domain/url-builder');
-var urlParser = require('../domain/url-parser');
+const put = require('../../utils/put');
+const settings = require('../../resources/settings');
+const urlBuilder = require('../../registry/domain/url-builder');
+const urlParser = require('../domain/url-parser');
 
-var getOcVersion = function(){
+const getOcVersion = function(){
 
-  var ocPackagePath = path.join(__dirname, '../../../package.json'),
-      ocInfo = fs.readJsonSync(ocPackagePath);
+  const ocPackagePath = path.join(__dirname, '../../../package.json'),
+    ocInfo = fs.readJsonSync(ocPackagePath);
 
   return ocInfo.version;
 };
@@ -22,7 +22,7 @@ var getOcVersion = function(){
 module.exports = function(opts){
   opts = opts || {};
 
-  var requestsHeaders = {
+  let requestsHeaders = {
     'user-agent': format('oc-cli-{0}/{1}-{2}-{3}',
                           getOcVersion(),
                           process.version,
@@ -38,17 +38,17 @@ module.exports = function(opts){
       }
 
       request({
-        url: registry, 
+        url: registry,
         headers: requestsHeaders,
         json: true
-      }, function(err, apiResponse){
+      }, (err, apiResponse) => {
         if(err || !apiResponse){
           return callback('oc registry not available', null);
         } else if(apiResponse.type !== 'oc-registry'){
           return callback('not a valid oc registry', null);
         }
 
-        fs.readJson(settings.configFile.src, function(err, res){
+        fs.readJson(settings.configFile.src, (err, res) => {
           if(err){
             res = {};
           }
@@ -57,7 +57,7 @@ module.exports = function(opts){
             res.registries = [];
           }
 
-          if(!_.contains(res.registries, registry)){
+          if(!_.includes(res.registries, registry)){
             res.registries.push(registry);
           }
 
@@ -67,10 +67,10 @@ module.exports = function(opts){
     },
     get: function(callback){
       if(opts.registry){
-          return callback(null, [opts.registry]);
+        return callback(null, [opts.registry]);
       }
 
-      fs.readJson(settings.configFile.src, function(err, res){
+      fs.readJson(settings.configFile.src, (err, res) => {
         if(err || !res.registries || res.registries.length === 0){
           return callback('No oc registries');
         }
@@ -87,13 +87,13 @@ module.exports = function(opts){
     },
     getComponentPreviewUrlByUrl: function(componentHref, callback){
       request({
-        url: componentHref, 
+        url: componentHref,
         headers: requestsHeaders,
         json: true
-      }, function(err, res){
+      }, (err, res) => {
         if(err){ return callback(err); }
 
-        var parsed = urlParser.parse(res);
+        const parsed = urlParser.parse(res);
         callback(null, urlBuilder.componentPreview(parsed, parsed.registryUrl));
       });
     },
@@ -102,9 +102,9 @@ module.exports = function(opts){
         requestsHeaders = _.extend(requestsHeaders, { 'Authorization': 'Basic ' + new Buffer(options.username + ':' + options.password).toString('base64') });
       }
 
-      put(options.route, options.path, requestsHeaders, function(err, res){
+      put(options.route, options.path, requestsHeaders, (err, res) => {
 
-        if(!!err){
+        if(err){
           if(!_.isObject(err)){
             try {
               err = JSON.parse(err);
@@ -126,7 +126,7 @@ module.exports = function(opts){
       });
     },
     remove: function(registry, callback){
-      fs.readJson(settings.configFile.src, function(err, res){
+      fs.readJson(settings.configFile.src, (err, res) => {
         if(err){
           res = {};
         }
