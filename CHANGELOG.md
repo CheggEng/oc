@@ -1,5 +1,19 @@
 ## Change Log
 
+### v0.37.2
+- [#481](https://github.com/opentable/oc/pull/481) issue-with-amd
+
+### v0.37.1
+- [#479](https://github.com/opentable/oc/pull/479) Allow node core deps to be used and whitelisted
+- [#478](https://github.com/opentable/oc/pull/478) Upgrade chai
+
+### v0.37.0
+- [#467](https://github.com/opentable/oc/pull/467) [MLP-594] History
+
+### v0.36.28
+- [#477](https://github.com/opentable/oc/pull/477) get-components-by-dir-issue
+- [#475](https://github.com/opentable/oc/pull/475) Housekeeping
+
 ### v0.36.27
 - [#472](https://github.com/opentable/oc/pull/472) issue-with-component-info-get-params v2
 - [#469](https://github.com/opentable/oc/pull/469) Housekeeping
