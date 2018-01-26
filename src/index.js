@@ -1,4 +1,5 @@
 'use strict';
 
-module.exports.Client = require('../client');
+module.exports.cli = require('./cli/programmatic-api');
+module.exports.Client = require('oc-client');
 module.exports.Registry = require('./registry');
