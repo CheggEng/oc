@@ -1,5 +1,407 @@
 ## Change Log
 
+### v0.42.19
+- [#813](https://github.com/opentable/oc/pull/813) [DX-366] Allow usage of protocol  in storage.options.path
+- [#812](https://github.com/opentable/oc/pull/812) Update oc-s3-storage-adapter to the latest version 🚀
+
+### v0.42.18
+- [#811](https://github.com/opentable/oc/pull/811) [DX-363] Registry conf.env sanitizer
+
+### v0.42.17
+- [#810](https://github.com/opentable/oc/pull/810) [DX-270] Async update
+- [#809](https://github.com/opentable/oc/pull/809) fix(package): update cross-spawn to version 6.0.3
+- [#806](https://github.com/opentable/oc/pull/806) Update minimal-request to the latest version 🚀
+- [#805](https://github.com/opentable/oc/pull/805) Update mocha to the latest version 🚀
+- [#804](https://github.com/opentable/oc/pull/804) Update dependency-graph to the latest version 🚀
+- [#802](https://github.com/opentable/oc/pull/802) Update semver to the latest version 🚀
+- [#801](https://github.com/opentable/oc/pull/801) Update opn to the latest version 🚀
+
+### v0.42.16
+- [#792](https://github.com/opentable/oc/pull/792) Add test for issue #789 showing error message [Object object]
+
+### v0.42.15
+- [#798](https://github.com/opentable/oc/pull/798) Update oc-client to the latest version 🚀
+- [#797](https://github.com/opentable/oc/pull/797) Update oc-client-browser to the latest version 🚀
+
+### v0.42.14
+- [#795](https://github.com/opentable/oc/pull/795)  [DX-324] full async plugins initialisation
+
+### v0.42.13
+- [#794](https://github.com/opentable/oc/pull/794) [DX-296] Mocks can have the same signature as real plugins
+- [#793](https://github.com/opentable/oc/pull/793) Update oc-s3-storage-adapter to the latest version 🚀
+- [#790](https://github.com/opentable/oc/pull/790) Update oc-template-jade-compiler to the latest version 🚀
+- [#791](https://github.com/opentable/oc/pull/791) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#788](https://github.com/opentable/oc/pull/788) Update fs-extra to the latest version 🚀
+
+### v0.42.12
+- [#786](https://github.com/opentable/oc/pull/786) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#787](https://github.com/opentable/oc/pull/787) Update oc-template-jade-compiler to the latest version 🚀
+- [#785](https://github.com/opentable/oc/pull/785) Update oc-client to the latest version 🚀
+- [#784](https://github.com/opentable/oc/pull/784) Update oc-client-browser to the latest version 🚀
+- [#782](https://github.com/opentable/oc/pull/782) Update oc-template-jade-compiler to the latest version 🚀
+- [#783](https://github.com/opentable/oc/pull/783) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#781](https://github.com/opentable/oc/pull/781) Update fs-extra to the latest version 🚀
+
+### v0.42.10
+- [#775](https://github.com/opentable/oc/pull/775) Add github issue/PR templates
+- [#780](https://github.com/opentable/oc/pull/780) Update oc-client to the latest version 🚀
+- [#779](https://github.com/opentable/oc/pull/779) Update oc-client-browser to the latest version 🚀
+- [#776](https://github.com/opentable/oc/pull/776) Update lint-staged to the latest version 🚀
+
+### v0.42.7
+- [#778](https://github.com/opentable/oc/pull/778) Update oc-client to the latest version 🚀
+- [#777](https://github.com/opentable/oc/pull/777) Update oc-client-browser to the latest version 🚀
+
+### v0.42.6
+- [#774](https://github.com/opentable/oc/pull/774) logger.fail bugfix
+
+### v0.42.5
+- [#773](https://github.com/opentable/oc/pull/773) [DX-283] Dependencies handler on packaging
+
+### v0.42.4
+- [#772](https://github.com/opentable/oc/pull/772) Update oc-client to the latest version 🚀
+- [#771](https://github.com/opentable/oc/pull/771) [DX-277] Pass the templates down to the client via the registry
+- [#770](https://github.com/opentable/oc/pull/770) Update oc-client-browser to the latest version 🚀
+
+### v0.42.3
+- [#768](https://github.com/opentable/oc/pull/768) [DX-247] dev/publish cli mode - prevent some deps to run in an infinite loop
+
+### v0.42.2
+- [#757](https://github.com/opentable/oc/pull/757) [DX-260] s3 storage adapter
+- [#767](https://github.com/opentable/oc/pull/767) Update oc-client to the latest version 🚀
+
+### v0.42.1
+- [#765](https://github.com/opentable/oc/pull/765) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#766](https://github.com/opentable/oc/pull/766) Update oc-template-jade-compiler to the latest version 🚀
+- [#763](https://github.com/opentable/oc/pull/763) passing prefix option to dev cmd
+- [#764](https://github.com/opentable/oc/pull/764) Revert "Update async to the latest version 🚀"
+- [#740](https://github.com/opentable/oc/pull/740) Update async to the latest version 🚀
+- [#761](https://github.com/opentable/oc/pull/761) fix(package): update oc-template-handlebars-compiler to version 6.1.7
+- [#649](https://github.com/opentable/oc/pull/649) Update yargs to the latest version 🚀
+- [#760](https://github.com/opentable/oc/pull/760) Update oc-template-jade-compiler to the latest version 🚀
+- [#759](https://github.com/opentable/oc/pull/759) Update aws-sdk to the latest version 🚀
+- [#758](https://github.com/opentable/oc/pull/758) Update aws-sdk to the latest version 🚀
+- [#753](https://github.com/opentable/oc/pull/753) Update lint-staged to the latest version 🚀
+- [#756](https://github.com/opentable/oc/pull/756) Update aws-sdk to the latest version 🚀
+- [#754](https://github.com/opentable/oc/pull/754) Update aws-sdk to the latest version 🚀
+- [#755](https://github.com/opentable/oc/pull/755) Update builtin-modules to the latest version 🚀
+- [#751](https://github.com/opentable/oc/pull/751) Update aws-sdk to the latest version 🚀
+- [#749](https://github.com/opentable/oc/pull/749) Update aws-sdk to the latest version 🚀
+- [#747](https://github.com/opentable/oc/pull/747) Update oc-template-jade-compiler to the latest version 🚀
+- [#746](https://github.com/opentable/oc/pull/746) Update oc-template-handlebars to the latest version 🚀
+
+### v0.42.0
+- [#745](https://github.com/opentable/oc/pull/745) Update oc-client to the latest version 🚀
+- [#744](https://github.com/opentable/oc/pull/744) Update oc-template-handlebars to the latest version 🚀
+- [#743](https://github.com/opentable/oc/pull/743) Update aws-sdk to the latest version 🚀
+- [#742](https://github.com/opentable/oc/pull/742) Update oc-client to the latest version 🚀
+- [#739](https://github.com/opentable/oc/pull/739) Update aws-sdk to the latest version 🚀
+- [#737](https://github.com/opentable/oc/pull/737) Update oc-client to the latest version 🚀
+- [#736](https://github.com/opentable/oc/pull/736) Update aws-sdk to the latest version 🚀
+- [#735](https://github.com/opentable/oc/pull/735) Update aws-sdk to the latest version 🚀
+- [#734](https://github.com/opentable/oc/pull/734) Update aws-sdk to the latest version 🚀
+
+### v0.41.16
+- [#733](https://github.com/opentable/oc/pull/733) Repackage all components when file is outside component dir
+- [#732](https://github.com/opentable/oc/pull/732) Prettify all the things
+- [#731](https://github.com/opentable/oc/pull/731) this-less cleanup
+- [#729](https://github.com/opentable/oc/pull/729) Update aws-sdk to the latest version 🚀
+
+### v0.41.15
+- [#710](https://github.com/opentable/oc/pull/710) [DX-185] install compiler inside each components' dir
+
+### v0.41.14
+- [#728](https://github.com/opentable/oc/pull/728) [DX-226] ]Minimal css for the preview view
+- [#727](https://github.com/opentable/oc/pull/727) Update aws-sdk to the latest version 🚀
+
+### v0.41.13
+- [#725](https://github.com/opentable/oc/pull/725) [DX-221] Removing two clones
+- [#724](https://github.com/opentable/oc/pull/724) Update aws-sdk to the latest version 🚀
+- [#723](https://github.com/opentable/oc/pull/723) Update aws-sdk to the latest version 🚀
+- [#722](https://github.com/opentable/oc/pull/722) [DX-218] Expose cli to be used programmatically
+- [#719](https://github.com/opentable/oc/pull/719) Update dependency-graph to the latest version 🚀
+- [#721](https://github.com/opentable/oc/pull/721) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#720](https://github.com/opentable/oc/pull/720) Update oc-template-jade-compiler to the latest version 🚀
+- [#718](https://github.com/opentable/oc/pull/718) Update aws-sdk to the latest version 🚀
+- [#717](https://github.com/opentable/oc/pull/717) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#716](https://github.com/opentable/oc/pull/716) Update oc-template-jade-compiler to the latest version 🚀
+- [#715](https://github.com/opentable/oc/pull/715) Update oc-template-handlebars to the latest version 🚀
+- [#714](https://github.com/opentable/oc/pull/714) Update aws-sdk to the latest version 🚀
+- [#713](https://github.com/opentable/oc/pull/713) Update aws-sdk to the latest version 🚀
+- [#712](https://github.com/opentable/oc/pull/712) Update aws-sdk to the latest version 🚀
+- [#711](https://github.com/opentable/oc/pull/711) Update aws-sdk to the latest version 🚀
+- [#709](https://github.com/opentable/oc/pull/709) Update aws-sdk to the latest version 🚀
+
+### v0.41.12
+- [#708](https://github.com/opentable/oc/pull/708) Update oc-client to the latest version 🚀
+- [#707](https://github.com/opentable/oc/pull/707) Update oc-client-browser to the latest version 🚀
+- [#706](https://github.com/opentable/oc/pull/706) Update oc-client-browser to the latest version 🚀
+- [#705](https://github.com/opentable/oc/pull/705) [DX-202] Changelog fix
+- [#704](https://github.com/opentable/oc/pull/704) [DX-202] Execute all the tests
+- [#659](https://github.com/opentable/oc/pull/659) Issue #464: Replaces Grunt with NPM scripts
+
+### v0.41.11
+- [#703](https://github.com/opentable/oc/pull/703) Infinite npm i loop fix
+- [#702](https://github.com/opentable/oc/pull/702) Update dependency-graph to the latest version 🚀
+- [#701](https://github.com/opentable/oc/pull/701) Update aws-sdk to the latest version 🚀
+
+### v0.41.10
+- [#700](https://github.com/opentable/oc/pull/700) Error publish
+- [#699](https://github.com/opentable/oc/pull/699) Meaningful error shown when publish fails due to a generic API error
+- [#695](https://github.com/opentable/oc/pull/695) Update aws-sdk to the latest version 🚀
+- [#688](https://github.com/opentable/oc/pull/688) Decouple s3
+
+### v0.41.9
+- [#693](https://github.com/opentable/oc/pull/693) [DX-198] Watch .github.io folders
+- [#694](https://github.com/opentable/oc/pull/694) Npm install for new module bugfix
+
+### v0.41.8
+- [#692](https://github.com/opentable/oc/pull/692) [DX-197] Watcher bugfix
+- [#690](https://github.com/opentable/oc/pull/690) Update aws-sdk to the latest version 🚀
+- [#689](https://github.com/opentable/oc/pull/689) ignoring lock files
+- [#687](https://github.com/opentable/oc/pull/687) Update aws-sdk to the latest version 🚀
+- [#686](https://github.com/opentable/oc/pull/686) [DX-185] Removed NPM as dependency
+- [#685](https://github.com/opentable/oc/pull/685) Update oc-client to the latest version 🚀
+- [#681](https://github.com/opentable/oc/pull/681) [DX-185] Refactoring
+- [#684](https://github.com/opentable/oc/pull/684) Update mocha to the latest version 🚀
+
+### v0.41.7
+- [#679](https://github.com/opentable/oc/pull/679) [Snyk Update] New fixes for 2 vulnerable dependency paths
+- [#678](https://github.com/opentable/oc/pull/678) Update aws-sdk to the latest version 🚀
+- [#677](https://github.com/opentable/oc/pull/677) Update aws-sdk to the latest version 🚀
+- [#673](https://github.com/opentable/oc/pull/673) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#675](https://github.com/opentable/oc/pull/675) Update oc-template-jade-compiler to the latest version 🚀
+- [#674](https://github.com/opentable/oc/pull/674) Update oc-template-handlebars to the latest version 🚀
+- [#676](https://github.com/opentable/oc/pull/676) Update oc-template-jade to the latest version 🚀
+
+### v0.41.6
+- [#672](https://github.com/opentable/oc/pull/672) Update oc-client to the latest version 🚀
+- [#670](https://github.com/opentable/oc/pull/670) Update morgan to the latest version 🚀
+- [#671](https://github.com/opentable/oc/pull/671) Update oc-template-jade to the latest version 🚀
+- [#669](https://github.com/opentable/oc/pull/669) Upgrade Express as patch
+- [#666](https://github.com/opentable/oc/pull/666) Update oc-template-jade to the latest version 🚀
+- [#667](https://github.com/opentable/oc/pull/667) Update aws-sdk to the latest version 🚀
+- [#665](https://github.com/opentable/oc/pull/665) Update sinon to the latest version 🚀
+- [#664](https://github.com/opentable/oc/pull/664) chore(package): update lint-staged to version 4.2.3
+- [#660](https://github.com/opentable/oc/pull/660) Update body-parser to the latest version 🚀
+- [#661](https://github.com/opentable/oc/pull/661) Update aws-sdk to the latest version 🚀
+
+### v0.41.5
+- [#658](https://github.com/opentable/oc/pull/658) Update aws-sdk to the latest version 🚀
+- [#655](https://github.com/opentable/oc/pull/655) fix(package): update oc-template-jade-compiler to version 6.1.1
+- [#656](https://github.com/opentable/oc/pull/656) fix(package): update oc-template-handlebars-compiler to version 6.1.1
+- [#657](https://github.com/opentable/oc/pull/657) Update aws-sdk to the latest version 🚀
+- [#654](https://github.com/opentable/oc/pull/654) Update oc-client to the latest version 🚀
+- [#653](https://github.com/opentable/oc/pull/653) Update aws-sdk to the latest version 🚀
+- [#652](https://github.com/opentable/oc/pull/652) Update aws-sdk to the latest version 🚀
+- [#645](https://github.com/opentable/oc/pull/645) Update oc-template-handlebars to the latest version 🚀
+- [#647](https://github.com/opentable/oc/pull/647) Update oc-template-jade to the latest version 🚀
+- [#646](https://github.com/opentable/oc/pull/646) Update oc-template-jade-compiler to the latest version 🚀
+- [#644](https://github.com/opentable/oc/pull/644) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#648](https://github.com/opentable/oc/pull/648) Update aws-sdk to the latest version 🚀
+- [#643](https://github.com/opentable/oc/pull/643) Update oc-client to the latest version 🚀
+
+### v0.41.4
+- [#632](https://github.com/opentable/oc/pull/632) Improve watching for Dev registry
+- [#641](https://github.com/opentable/oc/pull/641) Update aws-sdk to the latest version 🚀
+- [#635](https://github.com/opentable/oc/pull/635) liveReload
+- [#639](https://github.com/opentable/oc/pull/639) Update fs-extra to the latest version 🚀
+- [#637](https://github.com/opentable/oc/pull/637) Update body-parser to the latest version 🚀
+- [#638](https://github.com/opentable/oc/pull/638) Update aws-sdk to the latest version 🚀
+
+### v0.41.3
+- [#640](https://github.com/opentable/oc/pull/640) Update oc-client to the latest version 🚀
+- [#636](https://github.com/opentable/oc/pull/636) Update aws-sdk to the latest version 🚀
+- [#634](https://github.com/opentable/oc/pull/634) Update body-parser to the latest version 🚀
+- [#633](https://github.com/opentable/oc/pull/633) Update aws-sdk to the latest version 🚀
+- [#631](https://github.com/opentable/oc/pull/631) Update aws-sdk to the latest version 🚀
+- [#629](https://github.com/opentable/oc/pull/629) Update pug to the latest version 🚀
+- [#630](https://github.com/opentable/oc/pull/630) Update aws-sdk to the latest version 🚀
+- [#628](https://github.com/opentable/oc/pull/628) Update aws-sdk to the latest version 🚀
+
+### v0.41.2
+- [#626](https://github.com/opentable/oc/pull/626) Update oc-client
+- [#625](https://github.com/opentable/oc/pull/625) Update oc-client-browser
+- [#624](https://github.com/opentable/oc/pull/624) inititalzie the dev registry with the dynamic require templatee
+
+### v0.41.1
+- [#619](https://github.com/opentable/oc/pull/619) Issue #618 : Accessing s3 bucket over a proxy from oc-registry
+- [#621](https://github.com/opentable/oc/pull/621) Update aws-sdk to the latest version 🚀
+- [#620](https://github.com/opentable/oc/pull/620) Update dependencies to enable Greenkeeper 🌴
+
+### v0.41.0
+- [#617](https://github.com/opentable/oc/pull/617) [OC-140] Declarative templates initialisation on a registry level
+- [#613](https://github.com/opentable/oc/pull/613) Pass option to the compiler for targeting specific build process
+
+### v0.40.10
+- [#616](https://github.com/opentable/oc/pull/616) [OC-93] Update oc-client
+
+### v0.40.9
+- [#615](https://github.com/opentable/oc/pull/615) [OC-93] Update oc-client
+
+### v0.40.8
+- [#612](https://github.com/opentable/oc/pull/612) [OC-127] Fix templates breaking change
+
+### v0.40.7
+- [#605](https://github.com/opentable/oc/pull/605) [OC-102] Return rendered version if client doesn't support
+- [#610](https://github.com/opentable/oc/pull/610) Update oc-client to the latest version 🚀
+- [#608](https://github.com/opentable/oc/pull/608) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#607](https://github.com/opentable/oc/pull/607) Update aws-sdk to the latest version 🚀
+- [#609](https://github.com/opentable/oc/pull/609) Update oc-template-jade-compiler to the latest version 🚀
+- [#604](https://github.com/opentable/oc/pull/604) Updated logo
+- [#606](https://github.com/opentable/oc/pull/606) Update aws-sdk to the latest version 🚀
+
+### v0.40.6
+- [#595](https://github.com/opentable/oc/pull/595) Add ability to disable watching on local dev registry
+- [#603](https://github.com/opentable/oc/pull/603) Update aws-sdk to the latest version 🚀
+- [#597](https://github.com/opentable/oc/pull/597) [OC-120] Registry webUI: preview route/view bug
+
+### v0.40.5
+- [#601](https://github.com/opentable/oc/pull/601) Update aws-sdk to the latest version 🚀
+
+### v0.40.4
+- [#602](https://github.com/opentable/oc/pull/602) Update oc-client to the latest version 🚀
+
+### v0.40.3
+- [#600](https://github.com/opentable/oc/pull/600) Update oc-client-browser to the latest version 🚀
+- [#599](https://github.com/opentable/oc/pull/599) Update aws-sdk to the latest version 🚀
+- [#594](https://github.com/opentable/oc/pull/594) Update sinon to the latest version 🚀
+
+### v0.40.2
+- [#592](https://github.com/opentable/oc/pull/592) [OC-103]
+- [#590](https://github.com/opentable/oc/pull/590) Update aws-sdk to the latest version 🚀
+- [#589](https://github.com/opentable/oc/pull/589) Add viewport meta tag to component preview
+
+### v0.40.1
+- [#588](https://github.com/opentable/oc/pull/588) [OC-87] publish with the new template system
+- [#587](https://github.com/opentable/oc/pull/587) Update pug to the latest version 🚀
+- [#586](https://github.com/opentable/oc/pull/586) Update aws-sdk to the latest version 🚀
+- [#585](https://github.com/opentable/oc/pull/585) Update fs-extra to the latest version 🚀
+- [#584](https://github.com/opentable/oc/pull/584) Update accept-language-parser to the latest version 🚀
+
+### v0.40.0
+- [#583](https://github.com/opentable/oc/pull/583) Saner registry default for config.discovery
+- [#581](https://github.com/opentable/oc/pull/581) [OC-79] Housekeeping
+
+### v0.39.8
+- [#580](https://github.com/opentable/oc/pull/580) [OC-86] Logging href, renderMode on the component-retrieved events
+- [#578](https://github.com/opentable/oc/pull/578) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#579](https://github.com/opentable/oc/pull/579) Update oc-template-jade-compiler to the latest version 🚀
+- [#577](https://github.com/opentable/oc/pull/577) Update aws-sdk to the latest version 🚀
+- [#576](https://github.com/opentable/oc/pull/576) Update aws-sdk to the latest version 🚀
+
+### v0.39.7
+- [#480](https://github.com/opentable/oc/pull/480) [OC-28] Cli init allows for --templateType to be npm module
+- [#575](https://github.com/opentable/oc/pull/575) Update CONTRIBUTING.md
+
+### v0.39.6
+- [#566](https://github.com/opentable/oc/pull/566) [OC-9] Components history seems to have wrong dates
+- [#574](https://github.com/opentable/oc/pull/574) fix(package): update semver to version 5.4.1
+- [#570](https://github.com/opentable/oc/pull/570) Update oc-template-handlebars to the latest version 🚀
+- [#571](https://github.com/opentable/oc/pull/571) Update oc-template-jade-compiler to the latest version 🚀
+- [#572](https://github.com/opentable/oc/pull/572) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#573](https://github.com/opentable/oc/pull/573) Update aws-sdk to the latest version 🚀
+
+### v0.39.5
+- [#569](https://github.com/opentable/oc/pull/569) Validation fix
+
+### v0.39.4
+- [#568](https://github.com/opentable/oc/pull/568) Update aws-sdk to the latest version 🚀
+- [#565](https://github.com/opentable/oc/pull/565) Housekeeping
+- [#564](https://github.com/opentable/oc/pull/564) Removed uglify-js
+- [#560](https://github.com/opentable/oc/pull/560) Update oc-template-jade-compiler to the latest version 🚀
+- [#559](https://github.com/opentable/oc/pull/559) Update oc-template-handlebars-compiler to the latest version 🚀
+- [#525](https://github.com/opentable/oc/pull/525) [OC-49] Templates
+- [#558](https://github.com/opentable/oc/pull/558) Update aws-sdk to the latest version 🚀
+
+### v0.39.3
+- [#557](https://github.com/opentable/oc/pull/557) [OC-75] Add status to the component-retrieved event log
+- [#555](https://github.com/opentable/oc/pull/555) Update aws-sdk to the latest version 🚀
+- [#554](https://github.com/opentable/oc/pull/554) Update aws-sdk to the latest version 🚀
+
+### v0.39.2
+- [#552](https://github.com/opentable/oc/pull/552) remove .Only from tests
+- [#550](https://github.com/opentable/oc/pull/550) Update uglify-js to the latest version 🚀
+- [#551](https://github.com/opentable/oc/pull/551) Update lint-staged to the latest version 🚀
+- [#549](https://github.com/opentable/oc/pull/549) Update webpack to the latest version 🚀
+- [#548](https://github.com/opentable/oc/pull/548) Update aws-sdk to the latest version 🚀
+- [#547](https://github.com/opentable/oc/pull/547) Update fs-extra to the latest version 🚀
+- [#501](https://github.com/opentable/oc/pull/501) Update dependencies to enable Greenkeeper 🌴
+- [#546](https://github.com/opentable/oc/pull/546) Fixing spacing when initializing component package
+
+### v0.39.1
+- [#545](https://github.com/opentable/oc/pull/545) Added a mime type for html files.
+
+### v0.39.0
+- [#542](https://github.com/opentable/oc/pull/542) Drop node4 tests
+- [#541](https://github.com/opentable/oc/pull/541) Housekeeping
+- [#538](https://github.com/opentable/oc/pull/538) [OC-69] Remove node client
+
+### v0.38.8
+- [#537](https://github.com/opentable/oc/pull/537) No postinstall build
+
+### v0.38.7
+- [#535](https://github.com/opentable/oc/pull/535) Fix grunt build to override package version
+- [#534](https://github.com/opentable/oc/pull/534) [OC-60] Oc client browser
+
+### v0.38.6
+- [#533](https://github.com/opentable/oc/pull/533) [OC-62] Loaders cleanup
+
+### v0.38.5
+- [#532](https://github.com/opentable/oc/pull/532) fix-global-ljs
+
+### v0.38.4
+- [#531](https://github.com/opentable/oc/pull/531) Fix register plugin
+
+### v0.38.3
+- [#530](https://github.com/opentable/oc/pull/530) Remove plugin detective logic
+
+### v0.38.2
+- [#528](https://github.com/opentable/oc/pull/528) [OC-50] Log body fix
+
+### v0.38.1
+- [#527](https://github.com/opentable/oc/pull/527) Do not watch .DS_Store files
+
+### v0.38.0
+- [#522](https://github.com/opentable/oc/pull/522) Issue w/ head.load
+
+### v0.37.11
+- [#488](https://github.com/opentable/oc/pull/488) yarn-support
+
+closes #487
+
+### v0.37.10
+- [#516](https://github.com/opentable/oc/pull/516) Improve AWS upload mechanism and allow to override registry timeout settings
+
+### v0.37.9
+- [#515](https://github.com/opentable/oc/pull/515) Ignore the .git folder for the dev watcher
+- [#507](https://github.com/opentable/oc/pull/507) Pretty printed code
+
+### v0.37.8
+- [#513](https://github.com/opentable/oc/pull/513) issue w/ registry add command
+- [#510](https://github.com/opentable/oc/pull/510) Hide available dependencies on dev mode
+- [#500](https://github.com/opentable/oc/pull/500) Show available dependencies in the UI
+
+### v0.37.7
+- [#509](https://github.com/opentable/oc/pull/509) Cleancss fix
+- [#505](https://github.com/opentable/oc/pull/505) Node 8
+- [#502](https://github.com/opentable/oc/pull/502) Upgrade some dependencies
+- [#503](https://github.com/opentable/oc/pull/503) eof
+
+### v0.37.6
+- [#499](https://github.com/opentable/oc/pull/499) Snyk
+- [#498](https://github.com/opentable/oc/pull/498) Fix build script
+- [#497](https://github.com/opentable/oc/pull/497) Fix vulnerabilities and remove npm shrinkwrap
+
+### v0.37.5
+- [#495](https://github.com/opentable/oc/pull/495) issue w/ plugins detective
+
+### v0.37.4
+- [#486](https://github.com/opentable/oc/pull/486) Render trycatch
+
+### v0.37.3
+- [#482](https://github.com/opentable/oc/pull/482) Upgrade multer
+
 ### v0.37.2
 - [#481](https://github.com/opentable/oc/pull/481) issue-with-amd
 
@@ -369,8 +771,7 @@
 
 ### v0.28.9
 - [#214](https://github.com/opentable/oc/pull/214) S3 validation
-- [#216](https://github.com/opentable/oc/pull/216) Looks good;
-    tested
+- [#216](https://github.com/opentable/oc/pull/216) Looks good
 
 ### v0.28.8
 - [#215](https://github.com/opentable/oc/pull/215) mock bugfix for when a value is not a string
@@ -401,7 +802,7 @@
 - [#200](https://github.com/opentable/oc/pull/200) Have optional callbacks in CLI functions
 
 ### v0.28.0
-- [#198](https://github.com/opentable/oc/pull/198) More details on errors
+- [#198](https://github.com/opentable/oc/pull/198) More details on errors from node client
 - [#197](https://github.com/opentable/oc/pull/197) Return null when there's no error in renderComponents
 
 ### v0.27.9
@@ -433,7 +834,7 @@
 - [#182](https://github.com/opentable/oc/pull/182) Node.js client post and various improvements
 
 ### v0.26.1
-- [#184](https://github.com/opentable/oc/pull/184) Allow oc dev to be hosted
+- [#184](https://github.com/opentable/oc/pull/184) Allow oc dev to be hosted from a custom base url
 
 ### v0.26.0
 - [#178](https://github.com/opentable/oc/pull/178) node.js client should accept serverRendering and clientRendering endpoints instead of generic array (breaking change)
@@ -561,7 +962,7 @@
 - [#77](https://github.com/opentable/oc/pull/77) allow jade to render partials
 - [#76](https://github.com/opentable/oc/pull/76) Sauce labs stabilization
 - [#75](https://github.com/opentable/oc/pull/75) Autocomplete experiment
-- [#74](https://github.com/opentable/oc/pull/74) specify registry
+- [#74](https://github.com/opentable/oc/pull/74) specify registry from terminal
 - [#67](https://github.com/opentable/oc/pull/67) Refactoring, cleanup
 - [#66](https://github.com/opentable/oc/pull/66) README update
 - [#65](https://github.com/opentable/oc/pull/65) server.js' req -> context

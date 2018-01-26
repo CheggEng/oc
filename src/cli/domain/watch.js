@@ -3,19 +3,29 @@
 const path = require('path');
 const watch = require('watch');
 
-module.exports = function(dirs, baseDir, changed){
+const settings = require('../../resources/settings');
+
+module.exports = function(dirs, baseDir, changed) {
   try {
-    watch.watchTree(path.resolve(baseDir), {
-      ignoreUnreadableDir: true,
-      ignoreDotFiles: false
-    }, (fileName, currentStat, previousStat) => {
-      if(!!currentStat || !!previousStat){
-        if(/node_modules|package.tar.gz|_package|\.sw[op]/gi.test(fileName) === false){
-          changed(null, fileName);
+    watch.watchTree(
+      path.resolve(baseDir),
+      {
+        interval: 0.5,
+        ignoreUnreadableDir: true,
+        ignoreDotFiles: false,
+        filter: fileOrDir =>
+          settings.filesToIgnoreOnDevWatch.test(fileOrDir) === false
+      },
+      (fileName, currentStat, previousStat) => {
+        if (!!currentStat || !!previousStat) {
+          const componentDir = dirs.find(dir =>
+            Boolean(fileName.match(dir + path.sep))
+          );
+          changed(null, fileName, componentDir);
         }
       }
-    });
-  } catch(err){
+    );
+  } catch (err) {
     changed(err);
   }
 };
