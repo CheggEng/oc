@@ -146,7 +146,7 @@ describe('registry : domain : options-sanitiser', () => {
             some: 'data'
           });
           expect(sanitise(options).storage.adapter).to.equal(
-            require('oc-s3-storage-adapter')
+            require('@chegg/oc-s3-storage-adapter')
           );
         });
       });
@@ -154,9 +154,9 @@ describe('registry : domain : options-sanitiser', () => {
     describe('when no storage adapter', () => {
       describe('is provided', () => {
         const options = { storage: {}, baseUrl: 'dummy' };
-        it('should default to the oc-s3-storage-adapter', () => {
+        it('should default to the @chegg/oc-s3-storage-adapter', () => {
           expect(sanitise(options).storage.adapter).to.equal(
-            require('oc-s3-storage-adapter')
+            require('@chegg/oc-s3-storage-adapter')
           );
         });
       });

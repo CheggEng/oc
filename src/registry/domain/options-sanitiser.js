@@ -61,12 +61,12 @@ module.exports = function(input) {
 
   if (options.s3) {
     options.storage = {};
-    options.storage.adapter = require('oc-s3-storage-adapter');
+    options.storage.adapter = require('@chegg/oc-s3-storage-adapter');
     options.storage.options = options.s3;
   }
 
   if (options.storage && !options.storage.adapter) {
-    options.storage.adapter = require('oc-s3-storage-adapter');
+    options.storage.adapter = require('@chegg/oc-s3-storage-adapter');
   }
 
   if (options.refreshInterval && options.storage) {
